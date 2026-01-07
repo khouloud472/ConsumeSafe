@@ -34,7 +34,7 @@ public class ProductService {
         
         if (!productOpt.isPresent()) {
             response.setStatus("NOT_FOUND");
-            response.setMessage("منتج لم يتم العثور عليه ❌");
+            response.setMessage("Product not found");
             return response;
         }
 
@@ -47,9 +47,9 @@ public class ProductService {
         if (product.isBoycotted()) {
             response.setStatus("BOYCOTTED");
             response.setBoycottReason(product.getBoycottReason());
-            response.setMessage("⚠️ هذا المنتج قد يكون مدرجا في قائمة المقاطعة!");
+            response.setMessage("This product may be on the boycott list!");
 
-            // جلب البدائل التونسية
+            // Get Tunisian alternatives
             List<Alternative> alternatives = alternativeRepository
                     .findByBoycottedProductOrderBySimilarityScoreDesc(product);
 
@@ -72,7 +72,7 @@ public class ProductService {
             response.setSuggestions(suggestions);
         } else {
             response.setStatus("SAFE");
-            response.setMessage("✅ هذا المنتج آمن للاستهلاك");
+            response.setMessage("This product is safe to consume");
         }
 
         return response;
@@ -84,7 +84,7 @@ public class ProductService {
         if (!productOpt.isPresent()) {
             ProductCheckResponse response = new ProductCheckResponse();
             response.setStatus("NOT_FOUND");
-            response.setMessage("منتج لم يتم العثور عليه ❌");
+            response.setMessage("Product not found");
             return response;
         }
 

@@ -18,18 +18,6 @@ public class ProductCheckResponse {
     private String message;
     private String status; // "SAFE", "BOYCOTTED", "NOT_FOUND"
 
-    public void setStatus(String not_found) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setMessage(String منتج_لم_يتم_العثور_عليه_) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void setMessage(String منتج_لم_يتم_العثور_عليه_) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

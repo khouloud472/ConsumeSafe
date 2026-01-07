@@ -61,7 +61,7 @@ public class ProductController {
     @PostMapping("/add")
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
         productService.addProduct(product);
-        return ResponseEntity.ok("✅ تم إضافة المنتج بنجاح");
+        return ResponseEntity.ok("Product added successfully");
     }
 
     @PostMapping("/alternative")
@@ -71,11 +71,11 @@ public class ProductController {
             @RequestParam String reason,
             @RequestParam(required = false) Double similarityScore) {
         productService.addAlternative(boycottedId, alternativeId, reason, similarityScore);
-        return ResponseEntity.ok("✅ تم إضافة البديل بنجاح");
+        return ResponseEntity.ok("Alternative added successfully");
     }
 
     @GetMapping("/health")
     public ResponseEntity<String> health() {
-        return ResponseEntity.ok("✅ ConsumeSafe API is running!");
+        return ResponseEntity.ok("ConsumeSafe API is running!");
     }
 }

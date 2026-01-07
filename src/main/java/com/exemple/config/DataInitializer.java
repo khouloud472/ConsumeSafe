@@ -21,35 +21,35 @@ public class DataInitializer {
     @Bean
     public ApplicationRunner initializeData() {
         return args -> {
-            // إزالة البيانات القديمة
+            // Initialize data
             if (productRepository.count() == 0) {
-                // منتجات مقاطعة عالمية
-                Product cocaCola = new Product(null, "كوكا كولا", "مشروب غازي", "المشروبات", "Coca-Cola", "5449000000036", true, 
-                    "شركة تدعم الاحتلال الإسرائيلي", false, null, 2.5, "مشروب غازي");
+                // Boycott products
+                Product cocaCola = new Product(null, "Coca-Cola", "Soft drink", "Beverages", "Coca-Cola", "5449000000036", true, 
+                    "Company supporting Israeli occupation", false, null, 2.5, "Soft drink");
                 
-                Product nestle = new Product(null, "نسكافيه", "قهوة سريعة الذوبان", "القهوة", "Nescafé", "7613034728899", true,
-                    "منتجات نستله تدعم الاحتلال", false, null, 5.0, "قهوة سريعة الذوبان");
+                Product nestle = new Product(null, "Nescafe", "Instant coffee", "Coffee", "Nescafe", "7613034728899", true,
+                    "Nestle products supporting occupation", false, null, 5.0, "Instant coffee");
 
-                Product starbucks = new Product(null, "منتجات ستاربكس", "قهوة وحلويات", "المقاهي", "Starbucks", null, true,
-                    "ستاربكس تدعم سياسات الاحتلال", false, null, 6.0, "منتجات القهوة والحلويات");
+                Product starbucks = new Product(null, "Starbucks products", "Coffee and pastries", "Cafes", "Starbucks", null, true,
+                    "Starbucks supporting occupation", false, null, 6.0, "Coffee and pastries");
 
-                // منتجات تونسية آمنة
-                Product cafeTunisien = new Product(null, "قهوة الهلال التونسية", "قهوة محلية الصنع", "القهوة", "الهلال", "9876543210", false,
-                    null, true, null, 3.5, "قهوة تونسية عالية الجودة");
+                // Tunisian safe products
+                Product cafeTunisien = new Product(null, "Tunisian Coffee", "Local coffee", "Coffee", "Halal Coffee", "9876543210", false,
+                    null, true, null, 3.5, "High quality Tunisian coffee");
 
-                Product jusOrange = new Product(null, "عصير البرتقال التونسي", "عصير طازج", "المشروبات", "الصفاقسي", "1234567890", false,
-                    null, true, null, 2.0, "عصير برتقال من ولاية صفاقس");
+                Product jusOrange = new Product(null, "Tunisian Orange Juice", "Fresh juice", "Beverages", "Sfaxian", "1234567890", false,
+                    null, true, null, 2.0, "Orange juice from Sfax region");
 
-                Product dateTunisia = new Product(null, "تمر التمرة", "تمر جاف", "الحلويات", "التمرة التونسية", "5555555555", false,
-                    null, true, null, 15.0, "تمر تونسي من واحات الساحل");
+                Product dateTunisia = new Product(null, "Tunisian Dates", "Dried dates", "Sweets", "Tunisian Dates", "5555555555", false,
+                    null, true, null, 15.0, "Tunisian dates from coastal oases");
 
-                Product harissaTunisia = new Product(null, "حريسة تونسية", "معجون حار", "التوابل", "الأم علياء", "3333333333", false,
-                    null, true, null, 4.5, "حريسة تقليدية تونسية");
+                Product harissaTunisia = new Product(null, "Tunisian Harissa", "Spicy paste", "Spices", "Mother's Kitchen", "3333333333", false,
+                    null, true, null, 4.5, "Traditional Tunisian harissa");
 
-                Product mlouhiaTunisia = new Product(null, "ملوحية تونسية", "حبوب كاملة", "الحبوب", "الحقل التونسي", "4444444444", false,
-                    null, true, null, 8.0, "ملوحية من المناطق الشمالية");
+                Product mlouhiaTunisia = new Product(null, "Tunisian Mloukhia", "Whole grains", "Grains", "Tunisian Field", "4444444444", false,
+                    null, true, null, 8.0, "Mloukhia from northern regions");
 
-                // حفظ المنتجات
+                // Save products
                 productRepository.save(cocaCola);
                 productRepository.save(nestle);
                 productRepository.save(starbucks);
@@ -59,18 +59,18 @@ public class DataInitializer {
                 productRepository.save(harissaTunisia);
                 productRepository.save(mlouhiaTunisia);
 
-                // إضافة البدائل
-                Alternative alt1 = new Alternative(null, cocaCola, jusOrange, "عصير تونسي بديل صحي", 0.85);
-                Alternative alt2 = new Alternative(null, nestle, cafeTunisien, "قهوة تونسية الصنع", 0.90);
-                Alternative alt3 = new Alternative(null, starbucks, cafeTunisien, "قهوة تونسية عالية الجودة", 0.88);
-                Alternative alt4 = new Alternative(null, cocaCola, dateTunisia, "حلويات صحية تونسية", 0.75);
+                // Add alternatives
+                Alternative alt1 = new Alternative(null, cocaCola, jusOrange, "Healthy Tunisian juice alternative", 0.85);
+                Alternative alt2 = new Alternative(null, nestle, cafeTunisien, "Tunisian made coffee", 0.90);
+                Alternative alt3 = new Alternative(null, starbucks, cafeTunisien, "High quality Tunisian coffee", 0.88);
+                Alternative alt4 = new Alternative(null, cocaCola, dateTunisia, "Healthy Tunisian sweets", 0.75);
 
                 alternativeRepository.save(alt1);
                 alternativeRepository.save(alt2);
                 alternativeRepository.save(alt3);
                 alternativeRepository.save(alt4);
 
-                System.out.println("✅ تم تحميل البيانات الأولية بنجاح!");
+                System.out.println("Initial data loaded successfully!");
             }
         };
     }
