@@ -1,5 +1,0 @@
-com\consumesafe\ConsumeSafeApplication.class
-com\consumesafe\entity\Product.class
-com\consumesafe\service\ProductService.class
-com\consumesafe\controller\ProductController.class
-com\consumesafe\repository\ProductRepository.class

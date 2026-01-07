@@ -32,9 +32,45 @@ pipeline {
             }
         }
 
+        /* ================= DEVSECOPS ================= */
+
+        stage('SAST - SonarQube') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Dependency Scan - OWASP') {
+            steps {
+                sh '''
+                mvn org.owasp:dependency-check-maven:check \
+                -DfailBuildOnCVSS=7
+                '''
+            }
+        }
+
+        stage('Secrets Scan - Gitleaks') {
+            steps {
+                sh 'gitleaks detect --no-git'
+            }
+        }
+
+        /* ============================================== */
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE .'
+            }
+        }
+
+        stage('Container Scan - Trivy') {
+            steps {
+                sh '''
+                trivy image --severity HIGH,CRITICAL \
+                --exit-code 1 $DOCKER_IMAGE
+                '''
             }
         }
 
@@ -48,10 +84,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline exécuté avec succès'
+            echo 'Pipeline DevSecOps exécuté avec succès'
         }
         failure {
-            echo 'Erreur dans le pipeline'
+            echo 'Pipeline bloqué pour raison de sécurité'
         }
     }
 }
