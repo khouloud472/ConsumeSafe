@@ -1,7 +1,7 @@
 ################################
 # Build stage
 ################################
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 WORKDIR /build
 
@@ -16,7 +16,7 @@ RUN mvn -B clean package -DskipTests
 ################################
 # Runtime stage
 ################################
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:21-jre-jammy
 
 ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75 -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
 

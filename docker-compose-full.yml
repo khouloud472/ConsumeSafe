@@ -1,0 +1,155 @@
+version: '3.9'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0.36
+    container_name: consumesafe-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: consumesafe
+      MYSQL_USER: consumesafe
+      MYSQL_PASSWORD: consumesafe123
+      MYSQL_TCP_PORT: 3306
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - consumesafe-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1024M
+    security_opt:
+      - no-new-privileges:true
+
+  # ConsumeSafe Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: consumesafe:1.0.0
+    container_name: consumesafe-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/consumesafe?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+      SPRING_DATASOURCE_USERNAME: consumesafe
+      SPRING_DATASOURCE_PASSWORD: consumesafe123
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_PROFILES_ACTIVE: prod
+      JAVA_OPTS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75 -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+    ports:
+      - "8083:8083"
+    networks:
+      - consumesafe-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048M
+        reservations:
+          cpus: "1.0"
+          memory: 1024M
+
+  # SonarQube Server for Code Analysis
+  sonarqube:
+    image: sonarqube:10.3-community
+    container_name: consumesafe-sonarqube
+    restart: unless-stopped
+    environment:
+      SONAR_DB_ENGINE: postgresql
+      SONAR_JDBC_URL: jdbc:postgresql://postgres:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonarqube
+      SONAR_JDBC_PASSWORD: sonarqube
+      SONAR_WEB_PORT: 9000
+      SONAR_WEB_CONTEXT: /
+      SONAR_CE_JAVAADDITIONALOPTS: "-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+ParallelRefProcEnabled"
+    ports:
+      - "9000:9000"
+    networks:
+      - consumesafe-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/api/system/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048M
+    security_opt:
+      - no-new-privileges:true
+
+  # PostgreSQL for SonarQube
+  postgres:
+    image: postgres:15-alpine
+    container_name: consumesafe-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sonarqube
+      POSTGRES_USER: sonarqube
+      POSTGRES_PASSWORD: sonarqube
+      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=pg_stat_statements"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - consumesafe-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonarqube"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+networks:
+  consumesafe-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  postgres_data:
+    driver: local
+  sonarqube_data:
+    driver: local
+  sonarqube_logs:
+    driver: local
+  sonarqube_extensions:
+    driver: local
