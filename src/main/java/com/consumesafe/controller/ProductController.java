@@ -1,0 +1,77 @@
+package com.consumesafe.service;
+
+import com.consumesafe.entity.Product;
+import com.consumesafe.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
+@Service
+@Transactional(readOnly = true)
+public class ProductService {
+    
+    private final ProductRepository productRepository;
+    
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+    
+    public Optional<Product> findByName(String productName) {
+        return productRepository.findByName(productName);
+    }
+    
+    public boolean isBoycotted(String productName) {
+        Optional<Product> product = productRepository.findByName(productName);
+        return product.map(Product::getBoycotted).orElse(false);
+    }
+    
+    public String getBoycottReason(String productName) {
+        return productRepository.findByName(productName)
+                .map(Product::getBoycottReason)
+                .orElse(null);
+    }
+    
+    public List<Product> getTunisianAlternatives() {
+        return productRepository.findByTunisianTrue();
+    }
+    
+    public List<Product> getTunisianAlternativesByCategory(String category) {
+        return productRepository.findTunisianByCategory(category);
+    }
+    
+    public List<Product> getBoycottedProducts() {
+        return productRepository.findByBoycottedTrue();
+    }
+    
+    public List<Product> searchProducts(String query) {
+        return productRepository.searchProducts(query);
+    }
+    
+    @Transactional
+    public Product saveProduct(Product product) {
+        log.info("Saving product: {}", product.getName());
+        return productRepository.save(product);
+    }
+    
+    @Transactional
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+        log.info("Deleted product with id: {}", id);
+    }
+    
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+    
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+    
+    public boolean productExists(String name) {
+        return productRepository.existsByName(name);
+    }
+}

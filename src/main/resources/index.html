@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConsumeSafe - تطبيق الحماية من المقاطعة</title>
+    <title>ConsumeSafe - Plateforme de Protection des Consommateurs Tunisiens</title>
+    
+    <!-- Meta tags améliorés -->
+    <meta name="description" content="Plateforme de protection des consommateurs tunisiens avec alternatives locales et sensibilisation.">
+    <meta name="keywords" content="consommation, Tunisie, boycott, alternatives, produits tunisiens">
+    <meta name="author" content="ConsumeSafe">
+    <meta property="og:title" content="ConsumeSafe - Protégez votre consommation">
+    <meta property="og:description" content="Plateforme de protection des consommateurs tunisiens avec alternatives locales.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1551135049-8a33b2fb2f61">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --tunisian-red: #e70013;
+            --tunisian-white: #ffffff;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,330 +43,82 @@
         }
 
         html {
-            direction: rtl;
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
         }
 
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-            animation: slideDown 0.6s ease-out;
-        }
-
-        header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        .check-section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .search-box input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .result-box {
-            margin-top: 20px;
-            padding: 20px;
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            display: none;
-            animation: slideIn 0.4s ease-out;
         }
 
-        .result-box.safe {
-            background-color: #e8f5e9;
-            border-right: 5px solid #4caf50;
-        }
-
-        .result-box.boycotted {
-            background-color: #ffebee;
-            border-right: 5px solid #f44336;
-        }
-
-        .result-box h3 {
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .status-icon {
-            font-size: 2em;
-            margin-right: 10px;
-        }
-
-        .alternatives {
-            margin-top: 20px;
-        }
-
-        .alternatives h4 {
-            color: #667eea;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .product-card {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #667eea;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .product-card:hover {
-            transform: translateX(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .product-card h5 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .product-card p {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-
-        .similarity-score {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            display: inline-block;
-        }
-
-        .tunisian-section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .product-item {
-            background: #f5f5f5;
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient);
             border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s;
+            border: 3px solid transparent;
+            background-clip: content-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
             border: 2px solid transparent;
+            background-clip: content-box;
         }
 
-        .product-item:hover {
-            border-color: #667eea;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .product-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .product-item h4 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .product-item .price {
-            color: #667eea;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            margin-top: 10px;
-        }
-
-        .badge-tunisian {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-        }
-
-        .badge-safe {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-        }
-
-        .badge-boycotted {
-            background-color: #ffcdd2;
-            color: #c62828;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .stat-item {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* Selection */
+        ::selection {
+            background: rgba(67, 97, 238, 0.3);
             color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
         }
 
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-            margin-top: 5px;
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            header h1 {
-                font-size: 2em;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         @keyframes spin {
@@ -343,307 +126,3994 @@
             100% { transform: rotate(360deg); }
         }
 
-        .tab-buttons {
+        .animate-fadeIn { animation: fadeIn 0.6s ease-out; }
+        .animate-pulse { animation: pulse 2s infinite; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-bounce { animation: bounce 2s ease-in-out infinite; }
+        .animate-spin { animation: spin 1s linear infinite; }
+
+        /* Glass Effect */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+
+        .glass:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 15px 30px;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            animation: slideInDown 0.5s ease-out;
+            transition: var(--transition);
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .navbar.scrolled {
+            top: 10px;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .nav-link:hover::before {
+            left: 0;
+        }
+
+        .nav-link:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            animation: pulse 2s infinite;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .menu-toggle:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 20px 60px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1551135049-8a33b2fb2f61?w=1600&h=900&fit=crop') center/cover;
+            opacity: 0.1;
+            z-index: -1;
+            animation: kenburns 30s infinite alternate;
+        }
+
+        @keyframes kenburns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, white 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 0.8s ease-out;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            animation: fadeIn 1s ease-out;
+            font-weight: 300;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            min-width: 160px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Search Section */
+        .search-section {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 20px 60px 20px 30px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            background: white;
+            color: var(--dark);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .search-options {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
             flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .search-option {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .search-option:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .search-option.active {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            line-height: 1.4;
+        }
+
+        .card-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Result Section */
+        .result-section {
+            margin: 60px auto;
+            max-width: 1000px;
+        }
+
+        .result-card {
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            animation: slideInLeft 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .result-card.boycotted {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        }
+
+        .result-card.safe {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        }
+
+        .result-card.unknown {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .result-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-icon.boycotted { background: var(--danger); }
+        .result-icon.safe { background: var(--success); }
+        .result-icon.unknown { background: var(--warning); }
+
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .result-description {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        /* Product Details */
+        .product-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* Alternatives Grid */
+        .alternatives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .alternative-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            animation: fadeIn 0.6s ease-out;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .alternative-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        .alternative-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .alternative-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .tunisian-badge {
+            background: linear-gradient(135deg, var(--tunisian-red) 0%, #c10000 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .similarity-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Awareness Section */
+        .awareness-section {
+            margin: 80px 0;
+        }
+
+        .awareness-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .awareness-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .awareness-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .awareness-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .awareness-card:hover .awareness-image {
+            transform: scale(1.05);
+        }
+
+        .awareness-content {
+            padding: 25px;
+        }
+
+        .awareness-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(67, 97, 238, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideInUp 0.3s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--dark);
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .tab-btn {
             padding: 10px 20px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            background: #667eea;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
             color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            backdrop-filter: blur(10px);
         }
 
         .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .tab-btn.active {
+            background: var(--gradient);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            animation: float 6s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-1 {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-2 {
+            top: 20%;
+            right: 10%;
+            animation-delay: 2s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .floating-3 {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 4s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .floating-4 {
+            bottom: 10%;
+            right: 5%;
+            animation-delay: 1s;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0 5px 5px 0;
+            gap: 5px;
+        }
+
+        .badge-tunisian {
+            background: linear-gradient(135deg, var(--tunisian-red) 0%, #c10000 100%);
+            color: white;
+        }
+
+        .badge-boycotted {
+            background: linear-gradient(135deg, var(--danger) 0%, #d63384 100%);
+            color: white;
+        }
+
+        .badge-popular {
+            background: linear-gradient(135deg, var(--warning) 0%, #fd7e14 100%);
+            color: white;
+        }
+
+        .badge-organic {
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+            color: white;
+        }
+
+        .badge-safe {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        /* Sustainability Score */
+        .sustainability-score {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .sustainability-star {
+            color: #ddd;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .sustainability-star.filled {
+            color: #ffd700;
+        }
+
+        .sustainability-star.half-filled {
+            background: linear-gradient(90deg, #ffd700 50%, #ddd 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px 20px 0 0;
+            padding: 60px 20px 30px;
+            margin-top: 80px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .quick-action {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .quick-action:hover::before {
+            left: 100%;
+        }
+
+        .quick-action:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .quick-action[title]::after {
+            content: attr(title);
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .quick-action:hover::after {
+            opacity: 1;
+            right: 75px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 4px;
+            transition: width 0.3s ease-out;
+            width: 0%;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            z-index: 2000;
+            animation: slideInRight 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification.success { 
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(5, 150, 105, 0.9) 100%);
+        }
+        .notification.error { 
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.9) 0%, rgba(220, 38, 38, 0.9) 100%);
+        }
+        .notification.warning { 
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.9) 0%, rgba(217, 119, 6, 0.9) 100%);
+        }
+        .notification.info { 
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(29, 78, 216, 0.9) 100%);
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: auto;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .notification-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Scanner Overlay */
+        .scanner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scanner-overlay.active {
+            display: flex;
+        }
+
+        .scanner-container {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .scanner-video {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Price Comparison */
+        .price-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .price-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .price-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .price-store {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .price-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .price-savings {
+            font-size: 0.9rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Rating */
+        .rating {
+            display: flex;
+            gap: 2px;
+            margin: 10px 0;
+        }
+
+        .rating-star {
+            color: #ddd;
+            font-size: 1.2rem;
+        }
+
+        .rating-star.filled {
+            color: #ffd700;
+        }
+
+        /* Feature Highlights */
+        .feature-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .awareness-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                width: 95%;
+                padding: 10px 15px;
+                top: 10px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: var(--shadow);
+                display: none;
+                margin: 0 20px;
+                z-index: 1001;
+            }
+
+            .nav-links.active {
+                display: flex;
+                animation: fadeIn 0.3s ease-out;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 15px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                padding: 100px 20px 40px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .search-container {
+                padding: 20px;
+            }
+
+            .search-options {
+                flex-direction: column;
+            }
+
+            .search-option {
+                justify-content: center;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .awareness-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .quick-action {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .search-input {
+                padding: 15px 50px 15px 20px;
+                font-size: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 15px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .quick-actions {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .quick-action {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+
+            .back-to-top {
+                bottom: 90px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .navbar {
+            background: rgba(45, 55, 72, 0.95);
+        }
+
+        body.dark-mode .nav-link {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .nav-link.active {
+            background: var(--gradient);
+            color: white;
+        }
+
+        body.dark-mode .search-container {
+            background: rgba(45, 55, 72, 0.95);
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .search-input {
+            background: #4a5568;
+            border-color: #4a5568;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .search-input:focus {
+            border-color: var(--primary);
+            background: #4a5568;
+        }
+
+        body.dark-mode .search-option {
+            background: #4a5568;
+            border-color: #4a5568;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .search-option.active {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .result-card,
+        body.dark-mode .alternative-card,
+        body.dark-mode .awareness-card,
+        body.dark-mode .stat-card {
+            background: #2d3748;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .card-title,
+        body.dark-mode .result-title {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .card-text,
+        body.dark-mode .result-description {
+            color: #a0aec0;
+        }
+
+        body.dark-mode .detail-item {
+            background: #4a5568;
+        }
+
+        body.dark-mode .btn-secondary {
+            background: #4a5568;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: #5a6578;
+        }
+
+        body.dark-mode .btn-outline {
+            border-color: #4a5568;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .btn-outline:hover {
+            background: #4a5568;
+            border-color: #667eea;
+        }
+
+        body.dark-mode .footer {
+            background: rgba(45, 55, 72, 0.8);
+        }
+
+        body.dark-mode .tab-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #4a5568;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .tab-btn.active {
+            background: var(--gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        body.dark-mode .floating-element {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Print Styles */
+        @media print {
+            .navbar,
+            .quick-actions,
+            .footer,
+            .cta-buttons,
+            .search-section,
+            .notification,
+            .modal,
+            .back-to-top {
+                display: none !important;
+            }
+
+            .hero {
+                padding: 20px 0;
+                min-height: auto;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+                background: black;
+                -webkit-background-clip: initial;
+                -webkit-text-fill-color: initial;
+                color: black;
+            }
+
+            body {
+                background: white !important;
+                color: black !important;
+            }
+
+            .card,
+            .result-card,
+            .alternative-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            .section {
+                padding: 20px 0;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus Styles */
+        *:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        *:focus:not(.focus-visible) {
+            outline: none;
+        }
+
+        /* Lazy Loading */
+        .lazy {
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        .lazy.loaded {
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🛡️ ConsumeSafe</h1>
-            <p>تطبيق حماية المستهلك والمنتجات التونسية</p>
-        </header>
-
-        <div class="main-content">
-            <!-- قسم الفحص -->
-            <div class="card check-section">
-                <h2>🔍 فحص المنتج</h2>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-content">
+            <a href="#home" class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ConsumeSafe</span>
                 
-                <div class="search-box">
-                    <input type="text" id="productName" placeholder="ابحث عن اسم المنتج...">
-                    <button class="btn btn-primary" onclick="checkProduct()">فحص</button>
-                </div>
-
-                <div class="search-box">
-                    <input type="text" id="barcodeInput" placeholder="أو ادخل رمز المنتج...">
-                    <button class="btn btn-primary" onclick="checkByBarcode()">فحص الرمز</button>
-                </div>
-
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>جاري الفحص...</p>
-                </div>
-
-                <div class="result-box" id="resultBox">
-                    <div id="resultContent"></div>
-                </div>
-            </div>
-
-            <!-- قسم المنتجات التونسية -->
-            <div class="card">
-                <h2>🇹🇳 المنتجات التونسية</h2>
-                <button class="btn btn-primary" onclick="loadTunisianProducts()" style="width: 100%; margin-bottom: 20px;">تحميل المنتجات</button>
-                
-                <div class="products-grid" id="tunisianProducts">
-                    <!-- سيتم ملؤها ديناميكياً -->
-                </div>
-            </div>
-        </div>
-
-        <!-- الإحصائيات -->
-        <div class="card">
-            <h2 style="color: #667eea; margin-bottom: 20px;">📊 الإحصائيات</h2>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-number" id="totalBoycotted">0</div>
-                    <div class="stat-label">منتجات مقاطعة</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="totalTunisian">0</div>
-                    <div class="stat-label">منتجات تونسية</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="totalSafe">0</div>
-                    <div class="stat-label">منتجات آمنة</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- قسم المنتجات المقاطعة -->
-        <div class="card" style="margin-top: 30px;">
-            <h2 style="color: #f44336; margin-bottom: 20px;">⚠️ المنتجات المقاطعة</h2>
-            <button class="btn btn-primary" onclick="loadBoycottedProducts()" style="width: 100%; margin-bottom: 20px;">عرض المنتجات المقاطعة</button>
+            </a>
             
-            <div class="products-grid" id="boycottedProducts">
-                <!-- سيتم ملؤها ديناميكياً -->
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="nav-link active">Accueil</a>
+                <a href="#search" class="nav-link">Scanner</a>
+                <a href="#products" class="nav-link">Produits</a>
+                <a href="#alternatives" class="nav-link">Alternatives</a>
+                <a href="#awareness" class="nav-link">Sensibilisation</a>
+                <a href="#statistics" class="nav-link">Statistiques</a>
+                <a href="#about" class="nav-link">À propos</a>
+                <button class="btn btn-outline nav-link" onclick="toggleDarkMode()" style="margin-left: 10px;">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        
+        <div class="hero-bg"></div>
+        <div class="floating-element floating-1"></div>
+        <div class="floating-element floating-2"></div>
+        <div class="floating-element floating-3"></div>
+        <div class="floating-element floating-4"></div>
+        
+        <div class="container">
+            <h1 data-aos="fade-down">ConsumeSafe</h1>
+            <p data-aos="fade-up" data-aos-delay="200">
+                Plateforme de protection des consommateurs tunisiens avec alternatives locales, 
+                animations interactives et sensibilisation éducative.
+            </p>
+
+           <div class="solidarity-message" data-aos="fade-up" data-aos-delay="400" 
+     style="margin: 20px 0; padding: 15px 25px; 
+            background: linear-gradient(135deg, rgba(0, 122, 61, 0.2) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(255, 255, 255, 0.1) 50%, rgba(206, 17, 38, 0.2) 100%);
+            border-radius: 15px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;">
+    
+    <!-- Effet de brillance -->
+    <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; 
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                animation: shine 3s infinite;"></div>
+    
+    <!-- Drapeau Palestine avec effet de vague -->
+    <div style="position: relative; width: 40px; height: 40px; 
+                background: linear-gradient(to bottom, #007a3d 33.33%, #000000 33.33%, #000000 66.66%, #ffffff 66.66%, #ffffff 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                animation: pulse 2s infinite ease-in-out;
+                overflow: hidden;">
+        
+        <!-- Triangle rouge -->
+        <div style="position: absolute; 
+                    top: 0;
+                    left: 0;
+                    width: 0;
+                    height: 0;
+                    border-top: 20px solid transparent;
+                    border-left: 20px solid #ce1126;
+                    border-bottom: 20px solid transparent;">
+        </div>
+        
+        <!-- Étoile (approximation) -->
+        <div style="position: absolute;
+                    top: 12px;
+                    left: 6px;
+                    width: 8px;
+                    height: 8px;
+                    background: white;
+                    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                    transform: rotate(18deg);">
+        </div>
+        
+        <!-- Effet de vague -->
+        <div style="position: absolute; 
+                    bottom: -5px;
+                    left: 0;
+                    width: 100%;
+                    height: 10px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 50%;
+                    animation: wave 3s infinite linear;">
+        </div>
+    </div>
+    
+    <!-- Texte -->
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <span style="color: white; font-weight: 600; font-size: 1.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+            Solidarité avec la Palestine
+        </span>
+        <span style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem; margin-top: 3px; font-weight: 400;">
+            🇵🇸 Pour une consommation responsable et engagée 🇵🇸
+        </span>
+    </div>
+    
+    <!-- Icône coeur battant -->
+    <div style="position: relative; width: 30px; height: 30px; margin-left: 5px;">
+        <i class="fas fa-heart" style="color: #ce1126; font-size: 1.5rem; 
+              position: absolute; 
+              animation: heartbeat 1.5s infinite ease-in-out;"></i>
+    </div>
+</div>
+
+<style>
+    @keyframes shine {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        50% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0,0,0,0.3); }
+    }
+    
+    @keyframes wave {
+        0% { transform: translateX(-100%) rotate(0deg); }
+        100% { transform: translateX(100%) rotate(360deg); }
+    }
+    
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); opacity: 0.8; }
+        50% { transform: scale(1.1); opacity: 1; }
+    }
+</style>
+        
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="300">
+            Protégez votre consommation, soutenez l'économie locale et faites des choix éclairés.
+        </p>
+            
+            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="400">
+                <button class="btn btn-primary" onclick="scrollToSearch()">
+                    <i class="fas fa-search"></i>
+                    <span>Vérifier un produit</span>
+                </button>
+                <button class="btn btn-secondary" onclick="showScanner()">
+                    <i class="fas fa-camera"></i>
+                    <span>Scanner code-barres</span>
+                </button>
+                <a href="#features" class="btn btn-outline">
+                    <i class="fas fa-star"></i>
+                    <span>Découvrir les fonctionnalités</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Fonctionnalités Principales</h2>
+            
+            <div class="feature-highlights">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Vérification Rapide</h3>
+                    <p>Recherchez ou scannez un produit pour savoir s'il est boycotté ou sûr</p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <h3>Alternatives Tunisiennes</h3>
+                    <p>Découvrez des alternatives locales de qualité pour chaque produit boycotté</p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analyses Avancées</h3>
+                    <p>Statistiques détaillées et analyses de consommation</p>
+                </div>
+                
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Sensibilisation</h3>
+                    <p>Contenu éducatif pour une consommation responsable</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section id="search" class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Vérifiez un Produit</h2>
+            
+            <div class="search-section">
+                <div class="search-container" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="search-box">
+                        <input type="text" 
+                               id="searchInput" 
+                               class="search-input" 
+                               placeholder="Rechercher un produit par nom, marque ou code-barres..."
+                               autocomplete="off"
+                               aria-label="Recherche de produit">
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="search-options">
+                        <div class="search-option active" data-type="name" role="button" tabindex="0" aria-pressed="true">
+                            <i class="fas fa-tag"></i>
+                            <span>Par nom</span>
+                        </div>
+                        <div class="search-option" data-type="barcode" role="button" tabindex="0" aria-pressed="false">
+                            <i class="fas fa-barcode"></i>
+                            <span>Code-barres</span>
+                        </div>
+                        <div class="search-option" data-type="category" role="button" tabindex="0" aria-pressed="false">
+                            <i class="fas fa-list"></i>
+                            <span>Catégorie</span>
+                        </div>
+                        <div class="search-option" data-type="camera" role="button" tabindex="0" aria-pressed="false">
+                            <i class="fas fa-camera"></i>
+                            <span>Scanner</span>
+                        </div>
+                    </div>
+                    
+                    <div class="cta-buttons">
+                        <button class="btn btn-primary" onclick="checkProduct()" id="checkButton">
+                            <i class="fas fa-search"></i>
+                            <span>Vérifier le produit</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="showRandomProduct()">
+                            <i class="fas fa-random"></i>
+                            <span>Produit aléatoire</span>
+                        </button>
+                    </div>
+                    
+                    <div id="loading" style="display: none;">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Analyse en cours...</p>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progressBar"></div>
+                            </div>
+                            <p class="hero-subtitle" style="margin-top: 20px;">Nous analysons le produit dans notre base de données...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Searches -->
+    <div class="container" id="recentSearches" style="display: none;">
+        <h3 style="color: white; margin-bottom: 20px;">Recherches Récentes</h3>
+        <div id="recentSearchesList" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+    </div>
+
+    <!-- Results Section -->
+    <section class="result-section" id="results">
+        <div class="container">
+            <div id="resultContainer"></div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Produits Populaires</h2>
+            
+            <div class="tabs" data-aos="fade-up">
+                <button class="tab-btn active" onclick="filterProducts('all')">Tous</button>
+                <button class="tab-btn" onclick="filterProducts('tunisian')">Tunisiens</button>
+                <button class="tab-btn" onclick="filterProducts('boycotted')">Boycottés</button>
+                <button class="tab-btn" onclick="filterProducts('food')">Alimentation</button>
+                <button class="tab-btn" onclick="filterProducts('cosmetics')">Cosmétiques</button>
+                <button class="tab-btn" onclick="filterProducts('beverages')">Boissons</button>
+            </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-secondary" onclick="loadMoreProducts()" id="loadMoreBtn" style="display: none;">
+                    <i class="fas fa-plus"></i>
+                    <span>Charger plus de produits</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alternatives Section -->
+    <section id="alternatives" class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Alternatives Tunisiennes</h2>
+            
+            <div class="alternatives-grid" id="alternativesGrid">
+                <!-- Alternatives will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Awareness Section -->
+    <section id="awareness" class="section awareness-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Sensibilisation</h2>
+            
+            <div class="awareness-grid" id="awarenessGrid">
+                <!-- Awareness content will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="statistics" class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-right">Statistiques</h2>
+            
+            <div class="stats-grid" id="statsGrid">
+                <!-- Statistics will be loaded dynamically -->
+            </div>
+            
+            <div class="feature-card" style="margin-top: 40px;" data-aos="fade-up">
+                <h3 style="margin-bottom: 20px;">Impact de la Consommation Responsable</h3>
+                <div id="impactChart" style="height: 200px; display: flex; align-items: flex-end; gap: 10px; margin-top: 20px;">
+                    <!-- Impact chart will be generated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scanner Overlay -->
+    <div class="scanner-overlay" id="scannerOverlay">
+        <div class="scanner-container">
+            <button class="modal-close" onclick="hideScanner()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <h2 style="margin-bottom: 20px; color: var(--dark);">Scanner Code-barres</h2>
+            
+            <div id="scannerPlaceholder" style="width: 100%; height: 300px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <i class="fas fa-camera" style="font-size: 3rem; color: #999;"></i>
+            </div>
+            
+            <p style="margin-bottom: 20px; color: #666;">
+                Placez le code-barres du produit devant la caméra
+            </p>
+            
+            <div class="cta-buttons">
+                <button class="btn btn-primary" onclick="simulateBarcodeScan()">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Simuler le scan</span>
+                </button>
+                <button class="btn btn-secondary" onclick="hideScanner()">
+                    <i class="fas fa-times"></i>
+                    <span>Annuler</span>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Image Gallery Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImage" src="" alt="" style="width: 100%; border-radius: 10px;">
+            <div id="modalCaption" style="text-align: center; margin-top: 15px; padding: 0 20px 20px;"></div>
+        </div>
+    </div>
+
+    <!-- Product Details Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="productModalContent" style="padding: 30px;"></div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <div class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <div class="quick-action" onclick="scrollToTop()" title="Retour en haut">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+        <div class="quick-action" onclick="showScanner()" title="Scanner produit">
+            <i class="fas fa-camera"></i>
+        </div>
+        <div class="quick-action" onclick="shareApp()" title="Partager l'app">
+            <i class="fas fa-share"></i>
+        </div>
+        <div class="quick-action" onclick="toggleDarkMode()" title="Mode sombre/clair">
+            <i class="fas fa-moon"></i>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ConsumeSafe</h3>
+                    <p>Plateforme de protection des consommateurs tunisiens avec alternatives locales et sensibilisation.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-home"></i> Accueil</a></li>
+                        <li><a href="#search"><i class="fas fa-search"></i> Scanner produit</a></li>
+                        <li><a href="#products"><i class="fas fa-shopping-basket"></i> Produits tunisiens</a></li>
+                        <li><a href="#awareness"><i class="fas fa-lightbulb"></i> Sensibilisation</a></li>
+                        <li><a href="#statistics"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Ressources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-book"></i> Guide du consommateur</a></li>
+                        <li><a href="#"><i class="fas fa-list"></i> Liste des produits boycottés</a></li>
+                        <li><a href="#"><i class="fas fa-exchange-alt"></i> Alternatives locales</a></li>
+                        <li><a href="#"><i class="fas fa-file-alt"></i> Rapports d'impact</a></li>
+                        <li><a href="#"><i class="fas fa-question-circle"></i> Centre d'aide</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:contact@consumesafe.tn"><i class="fas fa-envelope"></i> contact@consumesafe.tn</a></li>
+                        <li><a href="tel:+21670000000"><i class="fas fa-phone"></i> +216 70 000 000</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Tunis, Tunisia</li>
+                    </ul>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="font-size: 1rem; margin-bottom: 10px;">Téléchargez notre application</h4>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
+                                <i class="fab fa-apple"></i>
+                                <span>App Store</span>
+                            </button>
+                            <button class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
+                                <i class="fab fa-google-play"></i>
+                                <span>Play Store</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 ConsumeSafe. Tous droits réservés. | 
+                   <a href="#" style="color: rgba(255,255,255,0.7);">Politique de confidentialité</a> | 
+                   <a href="#" style="color: rgba(255,255,255,0.7);">Conditions d'utilisation</a>
+                </p>
+                <p style="margin-top: 10px;">
+                    Développé avec <i class="fas fa-heart" style="color: var(--danger);"></i> pour la Tunisie
+                    <span style="margin: 0 10px;">•</span>
+                    <i class="fas fa-code"></i> par l'équipe ConsumeSafe
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        const API_BASE = 'http://localhost:8082/api';
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100,
+            delay: 100
+        });
 
-        async function checkProduct() {
-            const productName = document.getElementById('productName').value.trim();
-            if (!productName) {
-                alert('الرجاء إدخال اسم المنتج');
-                return;
+        // Constants and Variables
+        const API_BASE = 'https://api.consumesafe.tn';
+        const DEMO_MODE = true; // Set to false for production
+        
+        let currentSearchType = 'name';
+        let currentFilter = 'all';
+        let currentProducts = [];
+        let currentPage = 1;
+        let isLoading = false;
+        let hasMoreProducts = true;
+        let searchHistory = [];
+        let darkMode = false;
+
+        // Demo Data
+        const DEMO_PRODUCTS = [
+            {
+                id: 1,
+                name: "Coca-Cola",
+                brand: "Coca-Cola Company",
+                category: "Boissons",
+                price: "2.500",
+                tunisian: false,
+                boycotted: true,
+                boycott_reason: "Supporte l'occupation israélienne",
+                popularity_score: 0.9,
+                sustainability_score: 2,
+                image_url: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&h=300&fit=crop",
+                description: "Boisson gazeuse très populaire"
+            },
+            {
+                id: 2,
+                name: "Café Tunisien Elouze",
+                brand: "Elouze",
+                category: "Café",
+                price: "3.500",
+                tunisian: true,
+                boycotted: false,
+                popularity_score: 0.8,
+                sustainability_score: 5,
+                image_url: "https://cdn.geantdrive.tn/tunis-city/1219381-large_default/cafe-pur-turc.jpg",
+                description: "Café tunisien de haute qualité"
+            },
+            {
+                id: 3,
+                name: "Pepsi",
+                brand: "PepsiCo",
+                category: "Boissons",
+                price: "2.400",
+                tunisian: false,
+                boycotted: true,
+                boycott_reason: "Supporte l'occupation israélienne",
+                popularity_score: 0.85,
+                sustainability_score: 2,
+                image_url: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop",
+                description: "Boisson gazeuse concurrente de Coca-Cola"
+            },
+            {
+                id: 4,
+                name: "Huile d'Olive Tunisienne",
+                brand: "Tunisolive",
+                category: "Huiles",
+                price: "15.000",
+                tunisian: true,
+                boycotted: false,
+                popularity_score: 0.7,
+                sustainability_score: 5,
+                image_url: "https://olovetunisia.com/cdn/shop/files/MG_0430_1080x.jpg?v=1764970896",
+                description: "Huile d'olive extra vierge de qualité supérieure"
+            },
+            {
+                id: 5,
+                name: "Nescafé",
+                brand: "Nestlé",
+                category: "Café",
+                price: "8.500",
+                tunisian: false,
+                boycotted: true,
+                boycott_reason: "Collaboration avec des entités israéliennes",
+                popularity_score: 0.75,
+                sustainability_score: 3,
+                image_url: "https://www.carrefour.tn/media/catalog/product/cache/717533d0b1f9b51c7b2a4a186f3847c5/7/6/7613033332883-1_2.webp?auto=webp&format=pjpg&width=840&height=1050&fit=cover",
+                description: "Café instantané populaire"
+            },
+            {
+                id: 6,
+                name: "Thé Tunisien",
+                brand: "Koufi",
+                category: "Thé",
+                price: "4.000",
+                tunisian: true,
+                boycotted: false,
+                popularity_score: 0.6,
+                sustainability_score: 4,
+                image_url: "https://kyufi.fr/cdn/shop/products/packouvertetstick_1ef9061a-ee52-4082-a347-ea25aa3fbe91.jpg?v=1667915101",
+                description: "Thé vert tunisien de qualité"
+            },
+            {
+                id: 7,
+                name: "Starbucks Coffee",
+                brand: "Starbucks",
+                category: "Café",
+                price: "12.000",
+                tunisian: false,
+                boycotted: true,
+                boycott_reason: "Supporte Israël",
+                popularity_score: 0.65,
+                sustainability_score: 3,
+                image_url: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop",
+                description: "Café de chaîne internationale"
+            },
+            {
+                id: 8,
+                name: "Fromage Tunisien",
+                brand: "Delice",
+                category: "Produits laitiers",
+                price: "6.500",
+                tunisian: true,
+                boycotted: false,
+                popularity_score: 0.7,
+                sustainability_score: 4,
+                image_url: "https://i2.wp.com/www.delice.tn/wp-content/uploads/2020/05/Untitled-1.png?fit=597%2C578&ssl=1",
+                description: "Fromage frais tunisien"
             }
+        ];
 
-            showLoading();
+        const DEMO_ALTERNATIVES = [
+            {
+                id: 1,
+                name: "Café Tunisien Hilal",
+                brand: "Hilal",
+                category: "Café",
+                price: "3.500",
+                similarity_score: 0.85,
+                sustainability_score: 5,
+                image_url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop",
+                reason: "Café tunisien de haute qualité cultivé localement",
+                stores: ["Carrefour", "Monoprix", "Magasin Général"],
+                rating: 4.5
+            },
+            {
+                id: 2,
+                name: "Jus d'Orange Tunisien",
+                brand: "Safaksi",
+                category: "Boissons",
+                price: "2.000",
+                similarity_score: 0.72,
+                sustainability_score: 5,
+                image_url: "https://cdn.geantdrive.tn/tunis-city/1349007-large_default/boisson-au-jus.jpg",
+                reason: "Jus naturel riche en vitamine C",
+                stores: ["Carrefour", "Monoprix"],
+                rating: 4.2
+            },
+            {
+                id: 3,
+                name: "Thé Tunisien Chaabi",
+                brand: "Chaabi",
+                category: "Thé",
+                price: "4.000",
+                similarity_score: 0.68,
+                sustainability_score: 4,
+                image_url: "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=300&fit=crop",
+                reason: "Thé vert tunisien de qualité supérieure",
+                stores: ["Magasin Général", "Supermarchés"],
+                rating: 4.3
+            }
+        ];
+
+        const DEMO_AWARENESS = [
+            {
+                id: 1,
+                title: "L'Impact du Boycott",
+                content: "Découvrez comment votre choix de consommation peut avoir un impact significatif sur l'économie et les causes que vous soutenez.",
+                content_type: "Éducation",
+                image_url: "https://www.chroniquepalestine.com/wp-content/uploads/2021/02/02-2-678x455.jpg",
+                video_url: "https://youtu.be/dQw4w9WgXcQ"
+            },
+            {
+                id: 2,
+                title: "Produits Tunisiens de Qualité",
+                content: "Explorez la richesse des produits tunisiens et comment ils peuvent remplacer les produits importés.",
+                content_type: "Découverte",
+                image_url: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400&h=200&fit=crop"
+            },
+            {
+                id: 3,
+                title: "Guide du Consommateur Responsable",
+                content: "Apprenez à lire les étiquettes, comprendre les certifications et faire des choix éclairés.",
+                content_type: "Guide",
+                image_url: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop"
+            }
+        ];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Load search history
+            loadSearchHistory();
+            
+            // Initialize event listeners
+            setupEventListeners();
+            
+            // Load initial data
+            await loadInitialData();
+            
+            // Setup search options
+            setupSearchOptions();
+            
+            // Setup keyboard shortcuts
+            setupKeyboardShortcuts();
+            
+            // Setup scroll events
+            setupScrollEvents();
+            
+            // Check for PWA installation
+            checkPWAInstallation();
+            
+            // Show welcome notification
+            setTimeout(() => {
+                showNotification('Bienvenue sur ConsumeSafe ! Commencez par vérifier un produit.', 'info', 5000);
+            }, 1000);
+        });
+
+        function setupEventListeners() {
+            // Search input
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkProduct();
+                }
+            });
+            
+            searchInput.addEventListener('input', function(e) {
+                if (this.value.length > 2) {
+                    showSearchSuggestions(this.value);
+                } else {
+                    hideSearchSuggestions();
+                }
+            });
+            
+            // Mobile menu toggle
+            document.getElementById('menuToggle').addEventListener('click', function() {
+                document.getElementById('navLinks').classList.toggle('active');
+                this.innerHTML = document.getElementById('navLinks').classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-content') && window.innerWidth <= 768) {
+                    document.getElementById('navLinks').classList.remove('active');
+                    document.getElementById('menuToggle').innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+            
+            // Modal close on outside click
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    closeModal();
+                    closeProductModal();
+                }
+            });
+        }
+
+        function setupSearchOptions() {
+            document.querySelectorAll('.search-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.search-option').forEach(opt => {
+                        opt.classList.remove('active');
+                        opt.setAttribute('aria-pressed', 'false');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-pressed', 'true');
+                    currentSearchType = this.dataset.type;
+                    
+                    // Update placeholder based on selection
+                    const placeholderMap = {
+                        'name': 'Rechercher un produit par nom ou marque...',
+                        'barcode': 'Entrer le code-barres du produit...',
+                        'category': 'Choisir une catégorie...',
+                        'camera': 'Cliquer pour scanner avec la caméra...'
+                    };
+                    
+                    document.getElementById('searchInput').placeholder = placeholderMap[currentSearchType] || 'Rechercher...';
+                    
+                    if (currentSearchType === 'camera') {
+                        showScanner();
+                    }
+                });
+                
+                option.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        this.click();
+                    }
+                });
+            });
+        }
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                // Ctrl/Cmd + F for search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                
+                // Escape to clear search
+                if (e.key === 'Escape') {
+                    document.getElementById('searchInput').value = '';
+                    hideSearchSuggestions();
+                }
+                
+                // Ctrl/Cmd + K for search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            });
+        }
+
+        function setupScrollEvents() {
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                const backToTop = document.getElementById('backToTop');
+                
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                
+                if (window.scrollY > 500) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+                
+                // Update active nav link based on scroll position
+                updateActiveNavLink();
+            });
+            
+            // Lazy load products on scroll
+            window.addEventListener('scroll', handleScroll);
+        }
+
+        async function loadInitialData() {
             try {
-                const response = await fetch(`${API_BASE}/products/check?name=${encodeURIComponent(productName)}`);
-                const data = await response.json();
-                displayResult(data);
+                showLoading(true, 'Chargement des données...');
+                
+                // Load popular products
+                await loadProducts('all');
+                
+                // Load alternatives
+                await loadAlternatives();
+                
+                // Load awareness content
+                await loadAwarenessContent();
+                
+                // Load statistics
+                await loadStatistics();
+                
+                // Generate impact chart
+                generateImpactChart();
+                
             } catch (error) {
-                console.error('Error:', error);
-                showError('حدث خطأ في الفحص');
+                console.error('Error loading initial data:', error);
+                showNotification('Erreur de chargement des données. Mode démo activé.', 'warning');
+                
+                // Fallback to demo data
+                displayDemoProducts();
+                displayDemoAlternatives();
+                displayDemoAwareness();
+                displayDemoStatistics();
             } finally {
-                hideLoading();
+                showLoading(false);
             }
         }
 
-        async function checkByBarcode() {
-            const barcode = document.getElementById('barcodeInput').value.trim();
-            if (!barcode) {
-                alert('الرجاء إدخال رمز المنتج');
+        async function checkProduct() {
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput.value.trim();
+            
+            if (!query) {
+                showNotification('Veuillez entrer un nom de produit', 'warning');
+                searchInput.focus();
                 return;
             }
-
-            showLoading();
+            
+            // Add to search history
+            addToSearchHistory(query);
+            
+            // Show loading
+            showLoading(true, `Analyse de "${query}"...`);
+            
             try {
-                const response = await fetch(`${API_BASE}/products/check-barcode?barcode=${encodeURIComponent(barcode)}`);
-                const data = await response.json();
-                displayResult(data);
+                let result;
+                
+                if (DEMO_MODE) {
+                    // Use demo data
+                    await simulateApiCall();
+                    result = getDemoResult(query);
+                } else {
+                    // Real API call
+                    const endpoint = currentSearchType === 'barcode' ? '/check-barcode' : '/check';
+                    const param = currentSearchType === 'barcode' ? 'barcode' : 'name';
+                    
+                    const response = await fetch(`${API_BASE}/products${endpoint}?${param}=${encodeURIComponent(query)}`, {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Erreur serveur');
+                    }
+                    
+                    result = await response.json();
+                }
+                
+                displayResult(result);
+                
+                // Update statistics
+                await loadStatistics();
+                
+                // Show success notification
+                showNotification(`Produit "${query}" analysé avec succès`, 'success');
+                
             } catch (error) {
-                console.error('Error:', error);
-                showError('حدث خطأ في الفحص');
+                console.error('Error checking product:', error);
+                showNotification('Erreur lors de la vérification du produit', 'error');
+                
+                // Fallback to demo result
+                displayDemoResult(query);
             } finally {
-                hideLoading();
+                showLoading(false);
+                hideSearchSuggestions();
             }
         }
 
         function displayResult(data) {
-            const resultBox = document.getElementById('resultBox');
-            const resultContent = document.getElementById('resultContent');
-            
+            const container = document.getElementById('resultContainer');
             let html = '';
-
-            if (data.status === 'NOT_FOUND') {
-                html = `
-                    <div style="text-align: center; color: #f44336;">
-                        <div class="status-icon">❌</div>
-                        <h3>منتج لم يتم العثور عليه</h3>
-                        <p>لم نجد هذا المنتج في قاعدة بيانتنا</p>
-                    </div>
-                `;
-                resultBox.className = 'result-box boycotted';
-            } else if (data.status === 'BOYCOTTED') {
-                html = `
-                    <div style="color: #c62828;">
-                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <div class="status-icon">⚠️</div>
-                            <h3 style="margin: 0;">${data.productName}</h3>
-                        </div>
-                        <p><strong>العلامة:</strong> ${data.brand || 'غير محدد'}</p>
-                        <p><strong>السبب:</strong> ${data.boycottReason}</p>
-                        <p style="color: #f44336; font-weight: bold; margin-top: 10px;">${data.message}</p>
-                `;
-
-                if (data.suggestions && data.suggestions.length > 0) {
-                    html += `
-                        <div class="alternatives">
-                            <h4>🌟 اقترحنا عليك بدائل تونسية آمنة</h4>
-                    `;
-                    
-                    data.suggestions.forEach(alt => {
-                        html += `
-                            <div class="product-card">
-                                <h5>${alt.name}</h5>
-                                <p><strong>العلامة:</strong> ${alt.brand}</p>
-                                <p><strong>الفئة:</strong> ${alt.category}</p>
-                                ${alt.price ? `<p><strong>السعر:</strong> ${alt.price} د.ت</p>` : ''}
-                                <p style="color: #666;">${alt.reason}</p>
-                                <div class="similarity-score">تطابق: ${(alt.similarityScore * 100).toFixed(0)}%</div>
-                            </div>
-                        `;
-                    });
-
-                    html += '</div>';
-                }
-
-                html += '</div>';
-                resultBox.className = 'result-box boycotted';
+            
+            if (data.status === 'BOYCOTTED') {
+                html = createBoycottedResultHTML(data);
+            } else if (data.status === 'SAFE') {
+                html = createSafeResultHTML(data);
             } else {
-                html = `
-                    <div style="color: #2e7d32;">
-                        <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                            <div class="status-icon">✅</div>
-                            <h3 style="margin: 0;">${data.productName}</h3>
+                html = createUnknownResultHTML(data);
+            }
+            
+            container.innerHTML = html;
+            
+            // Re-initialize AOS for new elements
+            AOS.refresh();
+            
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function createBoycottedResultHTML(data) {
+            const product = data.product;
+            const alternatives = data.alternatives || [];
+            
+            return `
+                <div class="result-card boycotted" data-aos="fade-up">
+                    <div class="result-header">
+                        <div class="result-icon boycotted">
+                            <i class="fas fa-ban"></i>
                         </div>
-                        <p><strong>العلامة:</strong> ${data.brand || 'غير محدد'}</p>
-                        <p style="color: #2e7d32; font-weight: bold; margin-top: 10px;">${data.message}</p>
+                        <div>
+                            <h2 class="result-title">⚠️ Produit Boycotté</h2>
+                            <p class="result-description">Ce produit figure sur notre liste des produits à boycotter</p>
+                        </div>
                     </div>
-                `;
-                resultBox.className = 'result-box safe';
-            }
-
-            resultContent.innerHTML = html;
-            resultBox.style.display = 'block';
+                    
+                    <div class="product-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Nom du produit</div>
+                            <div class="detail-value">${product?.name || 'Non spécifié'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Marque</div>
+                            <div class="detail-value">${product?.brand || 'Non spécifié'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Raison du boycott</div>
+                            <div class="detail-value" style="color: var(--danger);">${product?.boycott_reason || 'Non spécifié'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Statut</div>
+                            <div>
+                                <span class="badge badge-boycotted">Boycotté</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${product?.description ? `
+                        <div style="padding: 20px; background: rgba(255,255,255,0.5); border-radius: 15px; margin-bottom: 30px;">
+                            <h4 style="margin-bottom: 10px; color: var(--dark);">Description</h4>
+                            <p style="color: #666;">${product.description}</p>
+                        </div>
+                    ` : ''}
+                    
+                    <h3 style="margin: 30px 0 20px 0; color: var(--dark);">
+                        <i class="fas fa-lightbulb"></i> Alternatives Tunisiennes Recommandées:
+                    </h3>
+                    
+                    <div class="alternatives-grid">
+                        ${alternatives.length > 0 ? alternatives.map((alt, index) => `
+                            <div class="alternative-card" data-aos="fade-up" data-aos-delay="${index * 100}" 
+                                 onclick="showProductDetails(${JSON.stringify(alt).replace(/"/g, '&quot;')})">
+                                <div class="alternative-header">
+                                    <span class="tunisian-badge">
+                                        <i class="fas fa-flag"></i> Tunisien
+                                    </span>
+                                    <span class="similarity-badge">${Math.round((alt.similarity_score || 0.7) * 100)}% Match</span>
+                                </div>
+                                
+                                ${alt.image_url ? `
+                                    <img src="${alt.image_url}" alt="${alt.name}" 
+                                         style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                                ` : `
+                                    <div style="width: 100%; height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-box" style="font-size: 3rem; color: white;"></i>
+                                    </div>
+                                `}
+                                
+                                <h4 style="margin-bottom: 10px; font-weight: 600;">${alt.name}</h4>
+                                <p><strong>Marque:</strong> ${alt.brand || 'Non spécifié'}</p>
+                                <p><strong>Catégorie:</strong> ${alt.category || 'Non spécifié'}</p>
+                                
+                                ${alt.price ? `
+                                    <div style="margin: 10px 0;">
+                                        <strong>Prix:</strong> 
+                                        <span style="font-size: 1.2rem; font-weight: 700; color: var(--primary);">${alt.price} TND</span>
+                                    </div>
+                                ` : ''}
+                                
+                                ${alt.rating ? `
+                                    <div class="rating">
+                                        ${Array.from({length: 5}).map((_, i) => `
+                                            <i class="fas fa-star rating-star ${i < Math.floor(alt.rating) ? 'filled' : ''}"></i>
+                                        `).join('')}
+                                        <span style="margin-left: 5px; font-size: 0.9rem;">${alt.rating.toFixed(1)}</span>
+                                    </div>
+                                ` : ''}
+                                
+                                ${alt.sustainability_score ? `
+                                    <div class="sustainability-score">
+                                        ${Array.from({length: 5}).map((_, i) => `
+                                            <i class="fas fa-star sustainability-star ${i < alt.sustainability_score ? 'filled' : ''}"></i>
+                                        `).join('')}
+                                        <span style="margin-left: 5px; font-size: 0.9rem;">Durabilité</span>
+                                    </div>
+                                ` : ''}
+                                
+                                <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">
+                                    <i class="fas fa-info-circle"></i> ${alt.reason || 'Alternative tunisienne de qualité'}
+                                </p>
+                            </div>
+                        `).join('') : `
+                            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: rgba(255,255,255,0.5); border-radius: 15px;">
+                                <i class="fas fa-box-open" style="font-size: 3rem; color: #999; margin-bottom: 20px;"></i>
+                                <h4 style="color: var(--dark);">Aucune alternative suggérée pour le moment</h4>
+                                <p style="color: #666;">Nous recherchons des alternatives tunisiennes pour ce produit.</p>
+                                <button class="btn btn-secondary" onclick="loadProducts('tunisian')" style="margin-top: 20px;">
+                                    <i class="fas fa-search"></i> Voir tous les produits tunisiens
+                                </button>
+                            </div>
+                        `}
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 40px;">
+                        <button class="btn btn-primary" onclick="reportProduct('${product?.name || ''}')">
+                            <i class="fas fa-flag"></i> Signaler ce produit
+                        </button>
+                        <button class="btn btn-secondary" onclick="shareResult('${product?.name || ''}', 'boycotted')" style="margin-left: 10px;">
+                            <i class="fas fa-share"></i> Partager
+                        </button>
+                        <button class="btn btn-outline" onclick="saveProduct('${product?.name || ''}')" style="margin-left: 10px;">
+                            <i class="fas fa-bookmark"></i> Sauvegarder
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
-        async function loadTunisianProducts() {
-            showLoading();
+        function createSafeResultHTML(data) {
+            const product = data.product;
+            
+            return `
+                <div class="result-card safe" data-aos="fade-up">
+                    <div class="result-header">
+                        <div class="result-icon safe">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div>
+                            <h2 class="result-title">✅ Produit Sûr</h2>
+                            <p class="result-description">Ce produit n'est pas sur notre liste des produits à boycotter</p>
+                        </div>
+                    </div>
+                    
+                    <div class="product-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Nom du produit</div>
+                            <div class="detail-value">${product?.name || 'Non spécifié'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Marque</div>
+                            <div class="detail-value">${product?.brand || 'Non spécifié'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Statut</div>
+                            <div>
+                                <span class="badge badge-safe">Sûr pour la consommation</span>
+                            </div>
+                        </div>
+                        ${product?.tunisian ? `
+                            <div class="detail-item">
+                                <div class="detail-label">Origine</div>
+                                <div>
+                                    <span class="badge badge-tunisian">🇹🇳 Tunisien</span>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    ${product?.description ? `
+                        <div style="padding: 20px; background: rgba(255,255,255,0.5); border-radius: 15px; margin-bottom: 30px;">
+                            <h4 style="margin-bottom: 10px; color: var(--dark);">Description</h4>
+                            <p style="color: #666;">${product.description}</p>
+                        </div>
+                    ` : ''}
+                    
+                    ${product?.image_url ? `
+                        <div style="text-align: center; margin: 30px 0;">
+                            <img src="${product.image_url}" alt="${product.name}" 
+                                 style="max-width: 300px; max-height: 300px; border-radius: 15px; cursor: pointer;"
+                                 onclick="openImageModal('${product.image_url}', '${product.name}')">
+                        </div>
+                    ` : ''}
+                    
+                    ${product?.price ? `
+                        <div style="text-align: center; margin: 20px 0;">
+                            <h4 style="color: var(--dark); margin-bottom: 10px;">Prix moyen</h4>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">
+                                ${product.price} TND
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-primary" onclick="clearSearch()">
+                            <i class="fas fa-search"></i> Vérifier un autre produit
+                        </button>
+                        <button class="btn btn-secondary" onclick="shareResult('${product?.name || ''}', 'safe')" style="margin-left: 10px;">
+                            <i class="fas fa-share"></i> Partager
+                        </button>
+                        <button class="btn btn-outline" onclick="saveProduct('${product?.name || ''}')" style="margin-left: 10px;">
+                            <i class="fas fa-bookmark"></i> Sauvegarder
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createUnknownResultHTML(data) {
+            const query = document.getElementById('searchInput').value;
+            
+            return `
+                <div class="result-card unknown" data-aos="fade-up">
+                    <div class="result-header">
+                        <div class="result-icon unknown">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div>
+                            <h2 class="result-title">❓ Produit Inconnu</h2>
+                            <p class="result-description">Ce produit n'a pas été trouvé dans notre base de données</p>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 40px;">
+                        <p style="margin-bottom: 20px; color: #666;">Vous pouvez nous aider à améliorer notre base de données</p>
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="suggestProduct('${query}')">
+                                <i class="fas fa-plus"></i> Suggérer l'ajout
+                            </button>
+                            <button class="btn btn-secondary" onclick="searchSimilarProducts()">
+                                <i class="fas fa-search"></i> Produits similaires
+                            </button>
+                            <button class="btn btn-secondary" onclick="loadProducts('tunisian')">
+                                <i class="fas fa-flag"></i> Produits tunisiens
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadProducts(filter = 'all', append = false) {
             try {
-                const response = await fetch(`${API_BASE}/products/tunisian`);
-                const products = await response.json();
-                displayProducts(products, 'tunisianProducts');
+                isLoading = true;
+                showLoading(true, 'Chargement des produits...');
+                
+                let products = [];
+                
+                if (DEMO_MODE) {
+                    // Filter demo products
+                    await simulateApiCall();
+                    products = DEMO_PRODUCTS.filter(product => {
+                        switch(filter) {
+                            case 'tunisian':
+                                return product.tunisian;
+                            case 'boycotted':
+                                return product.boycotted;
+                            case 'food':
+                                return ['Café', 'Huiles', 'Thé', 'Produits laitiers'].includes(product.category);
+                            case 'cosmetics':
+                                return false;
+                            case 'beverages':
+                                return product.category === 'Boissons';
+                            default:
+                                return true;
+                        }
+                    });
+                } else {
+                    // Real API call
+                    let endpoint = '/products';
+                    let params = [`page=${currentPage}`, `limit=12`];
+                    
+                    switch(filter) {
+                        case 'tunisian':
+                            endpoint = '/products/tunisian';
+                            break;
+                        case 'boycotted':
+                            endpoint = '/products/boycotted';
+                            break;
+                        case 'popular':
+                            endpoint = '/products/popular';
+                            break;
+                        default:
+                            if (filter !== 'all') {
+                                endpoint = '/products/search';
+                                params.push(`category=${encodeURIComponent(filter)}`);
+                            }
+                    }
+                    
+                    const response = await fetch(`${API_BASE}${endpoint}?${params.join('&')}`);
+                    products = await response.json();
+                }
+                
+                if (append) {
+                    currentProducts = [...currentProducts, ...products];
+                } else {
+                    currentProducts = products;
+                    currentPage = 1;
+                }
+                
+                displayProducts(currentProducts);
+                
+                // Show/hide load more button
+                const loadMoreBtn = document.getElementById('loadMoreBtn');
+                if (products.length >= 12) {
+                    loadMoreBtn.style.display = 'block';
+                    hasMoreProducts = true;
+                } else {
+                    loadMoreBtn.style.display = 'none';
+                    hasMoreProducts = false;
+                }
+                
             } catch (error) {
-                console.error('Error:', error);
-                showError('خطأ في تحميل المنتجات');
+                console.error('Error loading products:', error);
+                showNotification('Erreur de chargement des produits', 'error');
             } finally {
-                hideLoading();
+                isLoading = false;
+                showLoading(false);
             }
         }
 
-        async function loadBoycottedProducts() {
-            showLoading();
-            try {
-                const response = await fetch(`${API_BASE}/products/boycotted`);
-                const products = await response.json();
-                displayProducts(products, 'boycottedProducts');
-            } catch (error) {
-                console.error('Error:', error);
-                showError('خطأ في تحميل المنتجات');
-            } finally {
-                hideLoading();
-            }
-        }
-
-        function displayProducts(products, containerId) {
-            const container = document.getElementById(containerId);
+        function displayProducts(products) {
+            const container = document.getElementById('productsGrid');
             
             if (!products || products.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #999;">لا توجد منتجات</p>';
-                return;
-            }
-
-            let html = '';
-            products.forEach(product => {
-                const badge = product.boycotted ? 
-                    '<span class="badge badge-boycotted">⚠️ مقاطعة</span>' :
-                    '<span class="badge badge-safe">✅ آمن</span>';
-
-                html += `
-                    <div class="product-item">
-                        ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}">` : '<div style="height: 150px; background: #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">صورة غير متوفرة</div>'}
-                        <h4>${product.name}</h4>
-                        <p>${product.brand || '-'}</p>
-                        <p style="font-size: 0.85em; color: #999;">${product.category}</p>
-                        ${product.price ? `<div class="price">${product.price} د.ت</div>` : ''}
-                        ${product.tunisian ? '<span class="badge badge-tunisian">🇹🇳 تونسي</span>' : ''}
-                        ${badge}
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px; color: white;">
+                        <i class="fas fa-box-open" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.5;"></i>
+                        <h3>Aucun produit trouvé</h3>
+                        <p>Essayez avec un autre filtre</p>
                     </div>
                 `;
-            });
-
+                return;
+            }
+            
+            let html = products.map((product, index) => {
+                const isTunisian = product.tunisian;
+                const isBoycotted = product.boycotted;
+                const isPopular = product.popularity_score > 0.8;
+                
+                return `
+                    <div class="card" data-aos="fade-up" data-aos-delay="${index % 6 * 100}">
+                        ${product.image_url ? `
+                            <img src="${product.image_url}" alt="${product.name}" class="card-image" 
+                                 onclick="openImageModal('${product.image_url}', '${product.name}')">
+                        ` : `
+                            <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                <i class="fas fa-box" style="font-size: 3rem;"></i>
+                            </div>
+                        `}
+                        
+                        <div class="card-content">
+                            <h3 class="card-title">${product.name}</h3>
+                            <p class="card-text">
+                                <strong>Marque:</strong> ${product.brand || 'Non spécifié'}<br>
+                                <strong>Catégorie:</strong> ${product.category || 'Non spécifié'}
+                            </p>
+                            
+                            ${product.description ? `
+                                <p class="card-text">${product.description.substring(0, 100)}${product.description.length > 100 ? '...' : ''}</p>
+                            ` : ''}
+                            
+                            <div class="card-footer">
+                                ${product.price ? `
+                                    <div style="font-size: 1.3rem; font-weight: 700; color: var(--primary); margin: 10px 0;">
+                                        ${product.price} TND
+                                    </div>
+                                ` : ''}
+                                
+                                <div style="margin: 10px 0;">
+                                    ${isTunisian ? '<span class="badge badge-tunisian">🇹🇳 Tunisien</span>' : ''}
+                                    ${isBoycotted ? '<span class="badge badge-boycotted">Boycotté</span>' : ''}
+                                    ${isPopular ? '<span class="badge badge-popular">Populaire</span>' : ''}
+                                    ${product.sustainability_score >= 4 ? '<span class="badge badge-organic">Écologique</span>' : ''}
+                                </div>
+                                
+                                ${product.sustainability_score ? `
+                                    <div class="sustainability-score">
+                                        ${Array.from({length: 5}).map((_, i) => `
+                                            <i class="fas fa-star sustainability-star ${i < product.sustainability_score ? 'filled' : ''}"></i>
+                                        `).join('')}
+                                        <span style="margin-left: 5px; font-size: 0.9rem;">Durabilité</span>
+                                    </div>
+                                ` : ''}
+                                
+                                <button class="btn btn-primary" onclick="checkProductByName('${product.name}')" 
+                                        style="width: 100%; margin-top: 15px;">
+                                    <i class="fas fa-search"></i> Vérifier ce produit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
             container.innerHTML = html;
         }
 
-        function showLoading() {
-            document.getElementById('loading').style.display = 'block';
-        }
-
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-        }
-
-        function showError(message) {
-            const resultBox = document.getElementById('resultBox');
-            const resultContent = document.getElementById('resultContent');
-            resultContent.innerHTML = `<div style="text-align: center; color: #f44336;"><p>${message}</p></div>`;
-            resultBox.className = 'result-box boycotted';
-            resultBox.style.display = 'block';
-        }
-
-        // تحميل الإحصائيات عند فتح الصفحة
-        window.addEventListener('load', async () => {
+        async function loadAlternatives() {
             try {
-                const boycotted = await fetch(`${API_BASE}/products/boycotted`).then(r => r.json());
-                const tunisian = await fetch(`${API_BASE}/products/tunisian`).then(r => r.json());
+                let alternatives = [];
                 
-                document.getElementById('totalBoycotted').textContent = boycotted.length;
-                document.getElementById('totalTunisian').textContent = tunisian.length;
-                document.getElementById('totalSafe').textContent = 0; // سيتم حسابه حسب الحاجة
+                if (DEMO_MODE) {
+                    alternatives = DEMO_ALTERNATIVES;
+                } else {
+                    const response = await fetch(`${API_BASE}/alternatives`);
+                    alternatives = await response.json();
+                }
+                
+                displayAlternatives(alternatives);
             } catch (error) {
-                console.error('Error loading stats:', error);
+                console.error('Error loading alternatives:', error);
             }
-        });
+        }
+
+        function displayAlternatives(alternatives) {
+            const container = document.getElementById('alternativesGrid');
+            
+            if (!alternatives || alternatives.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: white;">
+                        <p>Aucune alternative disponible pour le moment</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = alternatives.map((alt, index) => `
+                <div class="alternative-card" data-aos="fade-up" data-aos-delay="${index * 100}"
+                     onclick="showProductDetails(${JSON.stringify(alt).replace(/"/g, '&quot;')})">
+                    <div class="alternative-header">
+                        <span class="tunisian-badge">
+                            <i class="fas fa-flag"></i> Tunisien
+                        </span>
+                        <span class="similarity-badge">${Math.round((alt.similarity_score || 0.7) * 100)}% Match</span>
+                    </div>
+                    
+                    ${alt.image_url ? `
+                        <img src="${alt.image_url}" alt="${alt.name}" 
+                             style="width: 100%; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                    ` : `
+                        <div style="width: 100%; height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-box" style="font-size: 3rem; color: white;"></i>
+                        </div>
+                    `}
+                    
+                    <h4 style="margin-bottom: 10px; font-weight: 600;">${alt.name}</h4>
+                    <p><strong>Marque:</strong> ${alt.brand || 'Non spécifié'}</p>
+                    <p><strong>Catégorie:</strong> ${alt.category || 'Non spécifié'}</p>
+                    
+                    ${alt.price ? `
+                        <div style="margin: 10px 0;">
+                            <strong>Prix:</strong> 
+                            <span style="font-size: 1.2rem; font-weight: 700; color: var(--primary);">${alt.price} TND</span>
+                        </div>
+                    ` : ''}
+                    
+                    ${alt.rating ? `
+                        <div class="rating">
+                            ${Array.from({length: 5}).map((_, i) => `
+                                <i class="fas fa-star rating-star ${i < Math.floor(alt.rating) ? 'filled' : ''}"></i>
+                            `).join('')}
+                            <span style="margin-left: 5px; font-size: 0.9rem;">${alt.rating.toFixed(1)}</span>
+                        </div>
+                    ` : ''}
+                    
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">
+                        <i class="fas fa-info-circle"></i> ${alt.reason || 'Alternative tunisienne de qualité'}
+                    </p>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        async function loadAwarenessContent() {
+            try {
+                let content = [];
+                
+                if (DEMO_MODE) {
+                    content = DEMO_AWARENESS;
+                } else {
+                    const response = await fetch(`${API_BASE}/awareness`);
+                    content = await response.json();
+                }
+                
+                displayAwarenessContent(content);
+            } catch (error) {
+                console.error('Error loading awareness content:', error);
+            }
+        }
+
+        function displayAwarenessContent(content) {
+            const container = document.getElementById('awarenessGrid');
+            
+            if (!content || content.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: white;">
+                        <p>Aucun contenu de sensibilisation disponible</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = content.map((item, index) => `
+                <div class="awareness-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                    ${item.image_url ? `
+                        <img src="${item.image_url}" alt="${item.title}" class="awareness-image">
+                    ` : ''}
+                    
+                    <div class="awareness-content">
+                        <span class="awareness-category">${item.content_type}</span>
+                        <h3 style="margin-bottom: 15px; font-size: 1.3rem;">${item.title}</h3>
+                        <p style="color: #666; line-height: 1.6;">${item.content}</p>
+                        
+                        ${item.video_url ? `
+                            <button class="btn btn-primary" onclick="playVideo('${item.video_url}')" style="margin-top: 15px;">
+                                <i class="fas fa-play"></i> Regarder la vidéo
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        async function loadStatistics() {
+            try {
+                let stats = {};
+                
+                if (DEMO_MODE) {
+                    stats = {
+                        total_boycotted: 10,
+                        total_tunisian: 12,
+                        total_safe: 17,
+                        alternatives_suggested: 11,
+                        total_searches: localStorage.getItem('consumesafe_searches_count') || 0,
+                        total_users: 1000,
+                        impact_score: 85
+                    };
+                } else {
+                    const response = await fetch(`${API_BASE}/statistics`);
+                    stats = await response.json();
+                }
+                
+                displayStatistics(stats);
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        function displayStatistics(stats) {
+            const container = document.getElementById('statsGrid');
+            
+            const statItems = [
+                { 
+                    icon: 'fa-ban', 
+                    number: stats.total_boycotted || 0, 
+                    label: 'Produits Boycottés',
+                    description: 'Produits à éviter'
+                },
+                { 
+                    icon: 'fa-flag', 
+                    number: stats.total_tunisian || 0, 
+                    label: 'Produits Tunisiens',
+                    description: 'Alternatives locales'
+                },
+                { 
+                    icon: 'fa-check-circle', 
+                    number: stats.total_safe || 0, 
+                    label: 'Produits Sûrs',
+                    description: 'Approuvés par notre communauté'
+                },
+                { 
+                    icon: 'fa-exchange-alt', 
+                    number: stats.alternatives_suggested || 0, 
+                    label: 'Alternatives',
+                    description: 'Suggestions faites'
+                },
+                { 
+                    icon: 'fa-search', 
+                    number: stats.total_searches || 0, 
+                    label: 'Recherches',
+                    description: 'Produits vérifiés'
+                },
+                { 
+                    icon: 'fa-users', 
+                    number: stats.total_users || 0, 
+                    label: 'Utilisateurs',
+                    description: 'Communauté active'
+                }
+            ];
+            
+            let html = statItems.map((item, index) => `
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="${index * 100}">
+                    <div class="stat-icon">
+                        <i class="fas ${item.icon}"></i>
+                    </div>
+                    <div class="stat-number">${item.number}</div>
+                    <div class="stat-label">${item.label}</div>
+                    <div style="font-size: 0.8rem; color: #999; margin-top: 5px;">${item.description}</div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        function generateImpactChart() {
+            const container = document.getElementById('impactChart');
+            const impacts = [
+                { label: 'Économie locale', value: 85 },
+                { label: 'Emplois créés', value: 60 },
+                { label: 'Environnement', value: 75 },
+                { label: 'Santé', value: 80 },
+                { label: 'Communauté', value: 90 }
+            ];
+            
+            let html = impacts.map(impact => `
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                    <div style="width: 100%; background: rgba(255,255,255,0.1); border-radius: 5px; height: 150px; position: relative;">
+                        <div style="position: absolute; bottom: 0; width: 100%; background: var(--gradient); border-radius: 5px; height: ${impact.value}%;"></div>
+                    </div>
+                    <div style="margin-top: 10px; text-align: center; color: white; font-size: 0.9rem;">
+                        <div>${impact.label}</div>
+                        <div style="font-weight: 600; margin-top: 5px;">${impact.value}%</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        // Helper Functions
+        function showNotification(message, type = 'info', duration = 3000) {
+            // Remove existing notifications
+            document.querySelectorAll('.notification').forEach(n => n.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.setAttribute('role', 'alert');
+            notification.setAttribute('aria-live', 'assertive');
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            notification.innerHTML = `
+                <i class="fas ${icons[type] || 'fa-info-circle'}"></i>
+                <span>${message}</span>
+                <button class="notification-close" onclick="this.parentElement.remove()" aria-label="Fermer">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after duration
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, duration);
+        }
+
+        function showLoading(show, message = 'Chargement...') {
+            const loadingElement = document.getElementById('loading');
+            const checkButton = document.getElementById('checkButton');
+            
+            if (show) {
+                loadingElement.style.display = 'block';
+                if (checkButton) checkButton.disabled = true;
+                
+                // Update loading message
+                const loadingMessage = loadingElement.querySelector('p');
+                if (loadingMessage && message) {
+                    loadingMessage.textContent = message;
+                }
+                
+                // Animate progress bar
+                const progressBar = document.getElementById('progressBar');
+                let width = 0;
+                const interval = setInterval(() => {
+                    if (width >= 90) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    width += Math.random() * 15 + 5;
+                    if (width > 90) width = 90;
+                    progressBar.style.width = `${width}%`;
+                }, 300);
+                
+            } else {
+                loadingElement.style.display = 'none';
+                if (checkButton) checkButton.disabled = false;
+                document.getElementById('progressBar').style.width = '0%';
+            }
+        }
+
+        function simulateApiCall() {
+            return new Promise(resolve => {
+                setTimeout(resolve, 1000 + Math.random() * 1000);
+            });
+        }
+
+        function getDemoResult(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            // Check if it's a boycotted product
+            const boycottedKeywords = ['coca', 'pepsi', 'nestle', 'nescafe', 'starbucks', 'mcdo', 'mcdonald', 'burger king'];
+            const isBoycotted = boycottedKeywords.some(keyword => lowerQuery.includes(keyword));
+            
+            // Check if it's a Tunisian product
+            const tunisianKeywords = ['tunisien', 'tunisienne', 'hilal', 'chaabi', 'delice', 'tunisolive', 'safaksi'];
+            const isTunisian = tunisianKeywords.some(keyword => lowerQuery.includes(keyword));
+            
+            if (isBoycotted) {
+                return {
+                    status: 'BOYCOTTED',
+                    product: {
+                        name: query,
+                        brand: lowerQuery.includes('coca') ? 'Coca-Cola Company' : 
+                               lowerQuery.includes('pepsi') ? 'PepsiCo' : 
+                               lowerQuery.includes('nest') ? 'Nestlé' : 
+                               lowerQuery.includes('starbucks') ? 'Starbucks' : 'Marque Internationale',
+                        boycott_reason: 'Supporte l\'occupation israélienne',
+                        category: lowerQuery.includes('café') || lowerQuery.includes('coffee') ? 'Café' : 'Boissons',
+                        description: 'Produit international faisant l\'objet d\'un boycott'
+                    },
+                    alternatives: DEMO_ALTERNATIVES
+                };
+            } else if (isTunisian) {
+                return {
+                    status: 'SAFE',
+                    product: {
+                        name: query,
+                        brand: 'Marque Tunisienne',
+                        tunisian: true,
+                        category: 'Produit Local',
+                        description: 'Produit tunisien de qualité',
+                        price: (Math.random() * 20 + 5).toFixed(3)
+                    }
+                };
+            } else {
+                // Random result for unknown products
+                const random = Math.random();
+                if (random < 0.3) {
+                    return { status: 'UNKNOWN' };
+                } else if (random < 0.65) {
+                    return {
+                        status: 'SAFE',
+                        product: {
+                            name: query,
+                            brand: 'Marque Générique',
+                            category: 'Divers',
+                            description: 'Produit vérifié et approuvé'
+                        }
+                    };
+                } else {
+                    return {
+                        status: 'BOYCOTTED',
+                        product: {
+                            name: query,
+                            brand: 'Marque Internationale',
+                            boycott_reason: 'Raisons éthiques ou politiques',
+                            category: 'Divers'
+                        },
+                        alternatives: DEMO_ALTERNATIVES.slice(0, 2)
+                    };
+                }
+            }
+        }
+
+        function checkProductByName(productName) {
+            document.getElementById('searchInput').value = productName;
+            checkProduct();
+        }
+
+        function filterProducts(filter) {
+            currentFilter = filter;
+            
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Load products
+            loadProducts(filter);
+            
+            // Scroll to products section
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function loadMoreProducts() {
+            if (!isLoading && hasMoreProducts) {
+                currentPage++;
+                loadProducts(currentFilter, true);
+            }
+        }
+
+        function handleScroll() {
+            if (isLoading || !hasMoreProducts) return;
+            
+            const scrollPosition = window.innerHeight + window.scrollY;
+            const pageHeight = document.documentElement.scrollHeight;
+            
+            if (scrollPosition >= pageHeight - 500) {
+                loadMoreProducts();
+            }
+        }
+
+        function updateActiveNavLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToSearch() {
+            document.getElementById('search').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('searchInput').focus();
+        }
+
+        function showScanner() {
+            document.getElementById('scannerOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideScanner() {
+            document.getElementById('scannerOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function simulateBarcodeScan() {
+            const barcodes = ['123456789012', '234567890123', '345678901234'];
+            const randomBarcode = barcodes[Math.floor(Math.random() * barcodes.length)];
+            
+            document.getElementById('searchInput').value = randomBarcode;
+            hideScanner();
+            checkProduct();
+            
+            showNotification('Code-barres scanné avec succès', 'success');
+        }
+
+        function openImageModal(imageUrl, caption) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalCaption = document.getElementById('modalCaption');
+            
+            modalImage.src = imageUrl;
+            modalImage.alt = caption;
+            modalCaption.textContent = caption;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showProductDetails(product) {
+            const modal = document.getElementById('productModal');
+            const content = document.getElementById('productModalContent');
+            
+            content.innerHTML = `
+                <h2 style="margin-bottom: 20px; color: var(--dark);">${product.name}</h2>
+                
+                ${product.image_url ? `
+                    <img src="${product.image_url}" alt="${product.name}" 
+                         style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 10px; margin-bottom: 20px;">
+                ` : ''}
+                
+                <div class="product-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Marque</div>
+                        <div class="detail-value">${product.brand || 'Non spécifié'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Catégorie</div>
+                        <div class="detail-value">${product.category || 'Non spécifié'}</div>
+                    </div>
+                    ${product.price ? `
+                        <div class="detail-item">
+                            <div class="detail-label">Prix</div>
+                            <div class="detail-value" style="color: var(--primary);">${product.price} TND</div>
+                        </div>
+                    ` : ''}
+                    ${product.similarity_score ? `
+                        <div class="detail-item">
+                            <div class="detail-label">Similarité</div>
+                            <div class="detail-value">${Math.round(product.similarity_score * 100)}%</div>
+                        </div>
+                    ` : ''}
+                </div>
+                
+                ${product.reason ? `
+                    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                        <h4 style="margin-bottom: 10px; color: var(--dark);">Pourquoi choisir cette alternative ?</h4>
+                        <p style="color: #666;">${product.reason}</p>
+                    </div>
+                ` : ''}
+                
+                ${product.stores ? `
+                    <div style="margin: 20px 0;">
+                        <h4 style="margin-bottom: 10px; color: var(--dark);">Disponible dans :</h4>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            ${Array.isArray(product.stores) ? product.stores.map(store => `
+                                <span class="badge" style="background: #e9ecef; color: var(--dark);">${store}</span>
+                            `).join('') : ''}
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="selectAlternative('${product.name}')">
+                        <i class="fas fa-check"></i> Choisir cette alternative
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function selectAlternative(productName) {
+            document.getElementById('searchInput').value = productName;
+            closeProductModal();
+            checkProduct();
+            showNotification(`"${productName}" sélectionné comme alternative`, 'success');
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('resultContainer').innerHTML = '';
+            document.getElementById('searchInput').focus();
+        }
+
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark-mode', darkMode);
+            
+            // Update icon
+            const darkModeBtn = document.querySelector('[onclick="toggleDarkMode()"]');
+            if (darkModeBtn) {
+                darkModeBtn.innerHTML = darkMode 
+                    ? '<i class="fas fa-sun"></i>' 
+                    : '<i class="fas fa-moon"></i>';
+                darkModeBtn.title = darkMode ? 'Mode clair' : 'Mode sombre';
+            }
+            
+            // Save preference
+            localStorage.setItem('darkMode', darkMode);
+            
+            showNotification(`Mode ${darkMode ? 'sombre' : 'clair'} activé`, 'info');
+        }
+
+        function shareApp() {
+            const shareData = {
+                title: 'ConsumeSafe',
+                text: 'Découvrez ConsumeSafe - Protégez votre consommation, soutenez l\'économie tunisienne!',
+                url: window.location.href
+            };
+            
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => showNotification('Partagé avec succès!', 'success'))
+                    .catch(err => console.log('Erreur de partage:', err));
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`)
+                    .then(() => showNotification('Lien copié dans le presse-papier!', 'success'))
+                    .catch(err => showNotification('Erreur lors de la copie', 'error'));
+            }
+        }
+
+        function shareResult(productName, type) {
+            const message = type === 'boycotted' 
+                ? `⚠️ "${productName}" est un produit boycotté! Utilisez ConsumeSafe pour trouver des alternatives tunisiennes.`
+                : `✅ "${productName}" est un produit sûr! Continuez à consommer responsable avec ConsumeSafe.`;
+            
+            const shareData = {
+                title: 'Résultat ConsumeSafe',
+                text: message,
+                url: window.location.href
+            };
+            
+            if (navigator.share) {
+                navigator.share(shareData);
+            } else {
+                navigator.clipboard.writeText(`${message} ${window.location.href}`);
+                showNotification('Résultat copié dans le presse-papier!', 'success');
+            }
+        }
+
+        function reportProduct(productName) {
+            const reason = prompt(`Pourquoi voulez-vous signaler "${productName}" ?\nVeuillez décrire le problème:`, '');
+            if (reason && reason.trim()) {
+                showNotification('Produit signalé avec succès. Merci pour votre contribution!', 'success');
+                
+                // In a real app, send to API
+                console.log('Product reported:', { productName, reason });
+            }
+        }
+
+        function suggestProduct(productName) {
+            const details = prompt(`Suggérer l'ajout de "${productName}" à notre base de données.\nInformations supplémentaires:`, '');
+            if (details && details.trim()) {
+                showNotification('Suggestion envoyée avec succès! Notre équipe examinera votre demande.', 'success');
+                
+                // In a real app, send to API
+                console.log('Product suggestion:', { productName, details });
+            }
+        }
+
+        function saveProduct(productName) {
+            const savedProducts = JSON.parse(localStorage.getItem('consumesafe_saved_products') || '[]');
+            
+            if (!savedProducts.includes(productName)) {
+                savedProducts.push(productName);
+                localStorage.setItem('consumesafe_saved_products', JSON.stringify(savedProducts));
+                showNotification(`"${productName}" ajouté à vos favoris`, 'success');
+            } else {
+                showNotification(`"${productName}" est déjà dans vos favoris`, 'info');
+            }
+        }
+
+        function searchSimilarProducts() {
+            const query = document.getElementById('searchInput').value;
+            if (query) {
+                loadProducts(query);
+                showNotification(`Recherche de produits similaires à "${query}"`, 'info');
+            }
+        }
+
+        function showRandomProduct() {
+            const products = ['Coca-Cola', 'Café Tunisien', 'Pepsi', 'Huile d\'Olive', 'Nescafé', 'Thé Tunisien'];
+            const randomProduct = products[Math.floor(Math.random() * products.length)];
+            
+            document.getElementById('searchInput').value = randomProduct;
+            checkProduct();
+        }
+
+        function playVideo(videoUrl) {
+            window.open(videoUrl, '_blank');
+            showNotification('Ouverture de la vidéo...', 'info');
+        }
+
+        function loadSearchHistory() {
+            searchHistory = JSON.parse(localStorage.getItem('consumesafe_search_history') || '[]');
+            updateRecentSearches();
+        }
+
+        function addToSearchHistory(query) {
+            // Remove if already exists
+            searchHistory = searchHistory.filter(item => item !== query);
+            
+            // Add to beginning
+            searchHistory.unshift(query);
+            
+            // Keep only last 10 searches
+            searchHistory = searchHistory.slice(0, 10);
+            
+            // Save to localStorage
+            localStorage.setItem('consumesafe_search_history', JSON.stringify(searchHistory));
+            
+            // Update counter
+            const searchCount = parseInt(localStorage.getItem('consumesafe_searches_count') || '0') + 1;
+            localStorage.setItem('consumesafe_searches_count', searchCount.toString());
+            
+            updateRecentSearches();
+        }
+
+        function updateRecentSearches() {
+            const container = document.getElementById('recentSearches');
+            const list = document.getElementById('recentSearchesList');
+            
+            if (searchHistory.length > 0) {
+                container.style.display = 'block';
+                list.innerHTML = searchHistory.map(term => `
+                    <button class="btn btn-outline" onclick="document.getElementById('searchInput').value = '${term}'; checkProduct();" 
+                            style="padding: 8px 15px; font-size: 0.9rem; border-color: rgba(255,255,255,0.3); color: white;">
+                        <i class="fas fa-history"></i> ${term}
+                    </button>
+                `).join('');
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function showSearchSuggestions(query) {
+            // In a real app, this would fetch from an API
+            const suggestions = DEMO_PRODUCTS
+                .filter(product => product.name.toLowerCase().includes(query.toLowerCase()))
+                .slice(0, 5);
+            
+            // Create or update suggestions dropdown
+            let dropdown = document.getElementById('searchSuggestions');
+            if (!dropdown) {
+                dropdown = document.createElement('div');
+                dropdown.id = 'searchSuggestions';
+                dropdown.style.cssText = `
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: white;
+                    border-radius: 10px;
+                    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                    z-index: 1000;
+                    margin-top: 5px;
+                    overflow: hidden;
+                `;
+                document.querySelector('.search-box').appendChild(dropdown);
+            }
+            
+            if (suggestions.length > 0) {
+                dropdown.innerHTML = suggestions.map(product => `
+                    <div style="padding: 10px 15px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #f0f0f0;"
+                         onclick="document.getElementById('searchInput').value = '${product.name}'; hideSearchSuggestions(); checkProduct();"
+                         onmouseover="this.style.background='#f8f9fa'"
+                         onmouseout="this.style.background='white'">
+                        <div style="font-weight: 500; color: var(--dark);">${product.name}</div>
+                        <div style="font-size: 0.8rem; color: #666;">${product.brand} • ${product.category}</div>
+                    </div>
+                `).join('');
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function hideSearchSuggestions() {
+            const dropdown = document.getElementById('searchSuggestions');
+            if (dropdown) {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function checkPWAInstallation() {
+            // Check if app is installed
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                console.log('App is installed as PWA');
+            }
+            
+            // Show install prompt for supported browsers
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                // Show install button
+                setTimeout(() => {
+                    showNotification(
+                        'Installer ConsumeSafe pour une meilleure expérience?',
+                        'info',
+                        10000
+                    );
+                }, 5000);
+            });
+        }
+
+        // Initialize dark mode from localStorage
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode) {
+            darkMode = true;
+            document.body.classList.add('dark-mode');
+            const darkModeBtn = document.querySelector('[onclick="toggleDarkMode()"]');
+            if (darkModeBtn) {
+                darkModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                darkModeBtn.title = 'Mode clair';
+            }
+        }
+
+        // Demo display functions
+        function displayDemoProducts() {
+            displayProducts(DEMO_PRODUCTS);
+        }
+
+        function displayDemoAlternatives() {
+            displayAlternatives(DEMO_ALTERNATIVES);
+        }
+
+        function displayDemoAwareness() {
+            displayAwarenessContent(DEMO_AWARENESS);
+        }
+
+        function displayDemoStatistics() {
+            displayStatistics({
+                total_boycotted: 10,
+                total_tunisian: 12,
+                total_safe: 17,
+                alternatives_suggested: 11,
+                total_searches: localStorage.getItem('consumesafe_searches_count') || 0,
+                total_users: 1000,
+                impact_score: 85
+            });
+        }
+
+        function displayDemoResult(query) {
+            displayResult(getDemoResult(query));
+        }
+
+        // Expose functions to global scope for onclick handlers
+        window.checkProduct = checkProduct;
+        window.checkProductByName = checkProductByName;
+        window.filterProducts = filterProducts;
+        window.loadMoreProducts = loadMoreProducts;
+        window.scrollToTop = scrollToTop;
+        window.scrollToSearch = scrollToSearch;
+        window.showScanner = showScanner;
+        window.hideScanner = hideScanner;
+        window.simulateBarcodeScan = simulateBarcodeScan;
+        window.openImageModal = openImageModal;
+        window.closeModal = closeModal;
+        window.closeProductModal = closeProductModal;
+        window.showProductDetails = showProductDetails;
+        window.selectAlternative = selectAlternative;
+        window.clearSearch = clearSearch;
+        window.toggleDarkMode = toggleDarkMode;
+        window.shareApp = shareApp;
+        window.shareResult = shareResult;
+        window.reportProduct = reportProduct;
+        window.suggestProduct = suggestProduct;
+        window.saveProduct = saveProduct;
+        window.searchSimilarProducts = searchSimilarProducts;
+        window.showRandomProduct = showRandomProduct;
+        window.playVideo = playVideo;
     </script>
 </body>
 </html>

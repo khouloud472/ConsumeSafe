@@ -52,37 +52,52 @@ CREATE TABLE IF NOT EXISTS alternatives (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
--- Insert Boycotted Products
+-- Insert Boycotted Products (International Brands)
 -- ============================================================
 INSERT INTO products (name, description, category, brand, barcode, boycotted, boycott_reason, tunisian, image_url, price, details) VALUES
-('كوكا كولا', 'مشروب غازي', 'المشروبات', 'Coca-Cola', '5449000000036', TRUE, 'شركة تدعم الاحتلال الإسرائيلي', FALSE, NULL, 2.5, 'مشروب غازي'),
-('نسكافيه', 'قهوة سريعة الذوبان', 'القهوة', 'Nescafé', '7613034728899', TRUE, 'منتجات نستله تدعم الاحتلال', FALSE, NULL, 5.0, 'قهوة سريعة الذوبان'),
-('منتجات ستاربكس', 'قهوة وحلويات', 'المقاهي', 'Starbucks', NULL, TRUE, 'ستاربكس تدعم سياسات الاحتلال', FALSE, NULL, 6.0, 'منتجات القهوة والحلويات'),
-('بيبسي', 'مشروب غازي', 'المشروبات', 'PepsiCo', '012000003100', TRUE, 'شركة تدعم الاحتلال', FALSE, NULL, 2.5, 'مشروب غازي'),
-('آيفون', 'هاتف ذكي', 'الهواتف', 'Apple', NULL, TRUE, 'شركة أمريكية تدعم الاحتلال', FALSE, NULL, 1200.0, 'هاتف ذكي فاخر');
+('Coca-Cola', 'Carbonated soft drink', 'Beverages', 'Coca-Cola', '5449000000036', TRUE, 'Company supports Israeli occupation', FALSE, NULL, 2.5, 'Famous carbonated drink'),
+('Nescafé', 'Instant coffee', 'Coffee', 'Nestlé', '7613034728899', TRUE, 'Nestlé products support occupation', FALSE, NULL, 5.0, 'Instant coffee brand'),
+('Starbucks Products', 'Coffee and pastries', 'Coffee Shops', 'Starbucks', NULL, TRUE, 'Starbucks supports occupation policies', FALSE, NULL, 6.0, 'Coffee and pastry products'),
+('Pepsi', 'Carbonated soft drink', 'Beverages', 'PepsiCo', '012000003100', TRUE, 'Company supports occupation', FALSE, NULL, 2.5, 'Carbonated soft drink'),
+('iPhone', 'Smartphone', 'Electronics', 'Apple', NULL, TRUE, 'American company supports occupation', FALSE, NULL, 1200.0, 'Premium smartphone'),
+('McDonald''s', 'Fast food restaurant', 'Fast Food', 'McDonald''s', NULL, TRUE, 'Supports Israeli economy', FALSE, NULL, 8.0, 'Fast food chain'),
+('L''Oréal Products', 'Cosmetics and beauty', 'Cosmetics', 'L''Oréal', NULL, TRUE, 'Company with Israeli investments', FALSE, NULL, 15.0, 'Beauty and cosmetics products'),
+('Pampers', 'Baby diapers', 'Baby Care', 'Procter & Gamble', NULL, TRUE, 'Parent company supports Israel', FALSE, NULL, 12.0, 'Baby care products'),
+('Nike Shoes', 'Sports shoes', 'Sportswear', 'Nike', NULL, TRUE, 'Brand with Israeli partnerships', FALSE, NULL, 80.0, 'Sports footwear'),
+('Heinz Ketchup', 'Tomato ketchup', 'Condiments', 'Kraft Heinz', NULL, TRUE, 'Company supports Israeli economy', FALSE, NULL, 3.5, 'Tomato ketchup');
 
 -- ============================================================
 -- Insert Tunisian Products
 -- ============================================================
 INSERT INTO products (name, description, category, brand, barcode, boycotted, boycott_reason, tunisian, image_url, price, details) VALUES
-('قهوة الهلال التونسية', 'قهوة محلية الصنع', 'القهوة', 'الهلال', '9876543210', FALSE, NULL, TRUE, NULL, 3.5, 'قهوة تونسية عالية الجودة'),
-('عصير البرتقال التونسي', 'عصير طازج', 'المشروبات', 'الصفاقسي', '1234567890', FALSE, NULL, TRUE, NULL, 2.0, 'عصير برتقال من ولاية صفاقس'),
-('تمر التمرة', 'تمر جاف', 'الحلويات', 'التمرة التونسية', '5555555555', FALSE, NULL, TRUE, NULL, 15.0, 'تمر تونسي من واحات الساحل'),
-('حريسة تونسية', 'معجون حار', 'التوابل', 'الأم علياء', '3333333333', FALSE, NULL, TRUE, NULL, 4.5, 'حريسة تقليدية تونسية'),
-('ملوحية تونسية', 'حبوب كاملة', 'الحبوب', 'الحقل التونسي', '4444444444', FALSE, NULL, TRUE, NULL, 8.0, 'ملوحية من المناطق الشمالية'),
-('زيت الزيتون التونسي', 'زيت عضوي', 'الزيوت', 'واحة التونس', '6666666666', FALSE, NULL, TRUE, NULL, 18.0, 'زيت زيتون بكر ممتاز من صفاقس'),
-('عسل تونسي', 'عسل طبيعي', 'المحليات', 'نحل التونس', '7777777777', FALSE, NULL, TRUE, NULL, 25.0, 'عسل سدر من الشمال');
+('Tunisian Coffee Hilal', 'Locally produced coffee', 'Coffee', 'Hilal', '9876543210', FALSE, NULL, TRUE, NULL, 3.5, 'High quality Tunisian coffee'),
+('Tunisian Orange Juice', 'Fresh orange juice', 'Beverages', 'Safaksi', '1234567890', FALSE, NULL, TRUE, NULL, 2.0, 'Fresh juice from Sfax region'),
+('Tunisian Dates', 'Dry dates', 'Sweets', 'Tunisian Dates', '5555555555', FALSE, NULL, TRUE, NULL, 15.0, 'Premium dates from Tunisian oases'),
+('Tunisian Harissa', 'Hot chili paste', 'Spices', 'Um Aliya', '3333333333', FALSE, NULL, TRUE, NULL, 4.5, 'Traditional Tunisian hot sauce'),
+('Tunisian Couscous', 'Whole grain couscous', 'Grains', 'Tunisian Field', '4444444444', FALSE, NULL, TRUE, NULL, 8.0, 'Traditional couscous from Northern regions'),
+('Tunisian Olive Oil', 'Organic olive oil', 'Oils', 'Tunis Oasis', '6666666666', FALSE, NULL, TRUE, NULL, 18.0, 'Extra virgin olive oil from Sfax'),
+('Tunisian Honey', 'Natural honey', 'Sweeteners', 'Tunisian Bees', '7777777777', FALSE, NULL, TRUE, NULL, 25.0, 'Natural Sidr honey from the North'),
+('Delice Biscuits', 'Tunisian biscuits', 'Snacks', 'Delice', '8888888888', FALSE, NULL, TRUE, NULL, 2.8, 'Popular Tunisian biscuits'),
+('Tunisian Mint Tea', 'Traditional mint tea', 'Tea', 'Tunis Tea', '9999999999', FALSE, NULL, TRUE, NULL, 5.5, 'Traditional Tunisian mint tea'),
+('Jeben Cheese', 'White cheese', 'Dairy', 'Jeben', '1010101010', FALSE, NULL, TRUE, NULL, 4.0, 'Traditional Tunisian white cheese'),
+('Tunisian Sardines', 'Canned sardines', 'Seafood', 'Sfax Sardines', '1111111111', FALSE, NULL, TRUE, NULL, 3.0, 'Canned sardines from Sfax coast'),
+('Tunisian Rose Water', 'Natural rose water', 'Cosmetics', 'Tunisian Roses', '1212121212', FALSE, NULL, TRUE, NULL, 7.0, 'Natural rose water for cosmetics');
 
 -- ============================================================
 -- Insert Alternatives (Relations)
 -- ============================================================
 INSERT INTO alternatives (boycotted_product_id, alternative_product_id, reason, similarity_score) VALUES
-((SELECT id FROM products WHERE name = 'كوكا كولا'), (SELECT id FROM products WHERE name = 'عصير البرتقال التونسي'), 'عصير تونسي بديل صحي', 0.85),
-((SELECT id FROM products WHERE name = 'نسكافيه'), (SELECT id FROM products WHERE name = 'قهوة الهلال التونسية'), 'قهوة تونسية الصنع', 0.90),
-((SELECT id FROM products WHERE name = 'منتجات ستاربكس'), (SELECT id FROM products WHERE name = 'قهوة الهلال التونسية'), 'قهوة تونسية عالية الجودة', 0.88),
-((SELECT id FROM products WHERE name = 'كوكا كولا'), (SELECT id FROM products WHERE name = 'تمر التمرة'), 'حلويات صحية تونسية', 0.75),
-((SELECT id FROM products WHERE name = 'بيبسي'), (SELECT id FROM products WHERE name = 'عصير البرتقال التونسي'), 'عصير تونسي طبيعي', 0.85),
-((SELECT id FROM products WHERE name = 'آيفون'), (SELECT id FROM products WHERE name = 'عسل تونسي'), 'منتج تونسي جودة عالية', 0.60);
+((SELECT id FROM products WHERE name = 'Coca-Cola'), (SELECT id FROM products WHERE name = 'Tunisian Orange Juice'), 'Healthy Tunisian juice alternative', 0.85),
+((SELECT id FROM products WHERE name = 'Nescafé'), (SELECT id FROM products WHERE name = 'Tunisian Coffee Hilal'), 'Locally produced Tunisian coffee', 0.90),
+((SELECT id FROM products WHERE name = 'Starbucks Products'), (SELECT id FROM products WHERE name = 'Tunisian Coffee Hilal'), 'High quality Tunisian coffee alternative', 0.88),
+((SELECT id FROM products WHERE name = 'Coca-Cola'), (SELECT id FROM products WHERE name = 'Tunisian Dates'), 'Healthy Tunisian sweets alternative', 0.75),
+((SELECT id FROM products WHERE name = 'Pepsi'), (SELECT id FROM products WHERE name = 'Tunisian Orange Juice'), 'Natural Tunisian juice', 0.85),
+((SELECT id FROM products WHERE name = 'McDonald''s'), (SELECT id FROM products WHERE name = 'Tunisian Dates'), 'Healthy snack alternative', 0.70),
+((SELECT id FROM products WHERE name = 'L''Oréal Products'), (SELECT id FROM products WHERE name = 'Tunisian Rose Water'), 'Natural Tunisian cosmetic alternative', 0.82),
+((SELECT id FROM products WHERE name = 'iPhone'), (SELECT id FROM products WHERE name = 'Tunisian Honey'), 'Premium Tunisian product', 0.60),
+((SELECT id FROM products WHERE name = 'Nike Shoes'), (SELECT id FROM products WHERE name = 'Tunisian Sardines'), 'Support local economy instead', 0.55),
+((SELECT id FROM products WHERE name = 'Heinz Ketchup'), (SELECT id FROM products WHERE name = 'Tunisian Harissa'), 'Spicy Tunisian alternative', 0.78),
+((SELECT id FROM products WHERE name = 'Pampers'), (SELECT id FROM products WHERE name = 'Tunisian Olive Oil'), 'Natural Tunisian product', 0.65);
 
 -- ============================================================
 -- Create Users Table (Future use)
@@ -133,7 +148,7 @@ CREATE TABLE IF NOT EXISTS statistics (
 -- Insert Initial Statistics
 -- ============================================================
 INSERT INTO statistics (total_products, total_boycotted, total_tunisian, total_searches) VALUES
-(12, 5, 7, 0);
+(22, 10, 12, 0);
 
 -- ============================================================
 -- Create Views for Common Queries
@@ -162,8 +177,52 @@ JOIN products p2 ON a.alternative_product_id = p2.id
 ORDER BY a.similarity_score DESC;
 
 -- ============================================================
+-- Create Search Logs Table
+-- ============================================================
+CREATE TABLE IF NOT EXISTS search_logs (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    search_term VARCHAR(255) NOT NULL,
+    search_count INT DEFAULT 1,
+    last_searched TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_search_term (search_term),
+    INDEX idx_search_count (search_count)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- Create Categories Table
+-- ============================================================
+CREATE TABLE IF NOT EXISTS categories (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    description VARCHAR(255),
+    icon VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Insert default categories
+INSERT INTO categories (name, description, icon) VALUES
+('Beverages', 'Drinks and beverages', 'glass'),
+('Coffee', 'Coffee products', 'coffee'),
+('Fast Food', 'Fast food restaurants', 'hamburger'),
+('Cosmetics', 'Beauty products', 'lipstick'),
+('Electronics', 'Electronic devices', 'smartphone'),
+('Baby Care', 'Baby products', 'baby'),
+('Sportswear', 'Sports clothing', 'shoe'),
+('Condiments', 'Sauces and condiments', 'bottle'),
+('Sweets', 'Sweet products', 'cookie'),
+('Spices', 'Spices and seasonings', 'spice'),
+('Grains', 'Grain products', 'wheat'),
+('Oils', 'Oils and fats', 'oil'),
+('Sweeteners', 'Sweetening products', 'honey'),
+('Snacks', 'Snack foods', 'popcorn'),
+('Tea', 'Tea products', 'tea'),
+('Dairy', 'Dairy products', 'milk'),
+('Seafood', 'Sea products', 'fish');
+
+-- ============================================================
 -- Set Privileges for ConsumeSafe User
 -- ============================================================
+CREATE USER IF NOT EXISTS 'consumesafe'@'%' IDENTIFIED BY 'securepassword123';
 GRANT ALL PRIVILEGES ON consumesafe.* TO 'consumesafe'@'%';
 FLUSH PRIVILEGES;
 
@@ -171,6 +230,25 @@ FLUSH PRIVILEGES;
 -- Display Summary
 -- ============================================================
 SELECT 'ConsumeSafe Database Initialized Successfully ✓' AS status;
-SELECT CONCAT('Total Products: ', COUNT(*)) FROM products;
-SELECT CONCAT('Boycotted Products: ', COUNT(*)) FROM products WHERE boycotted = TRUE;
-SELECT CONCAT('Tunisian Products: ', COUNT(*)) FROM products WHERE tunisian = TRUE;
+SELECT CONCAT('Total Products: ', COUNT(*)) AS summary FROM products;
+SELECT CONCAT('Boycotted Products: ', COUNT(*)) AS summary FROM products WHERE boycotted = TRUE;
+SELECT CONCAT('Tunisian Products: ', COUNT(*)) AS summary FROM products WHERE tunisian = TRUE;
+SELECT CONCAT('Alternative Relations: ', COUNT(*)) AS summary FROM alternatives;
+SELECT CONCAT('Categories: ', COUNT(*)) AS summary FROM categories;
+
+-- Display some sample data
+SELECT 'Sample Boycotted Products:' AS section;
+SELECT name, brand, category, boycott_reason FROM products WHERE boycotted = TRUE LIMIT 5;
+
+SELECT 'Sample Tunisian Alternatives:' AS section;
+SELECT name, brand, category, price FROM products WHERE tunisian = TRUE LIMIT 5;
+
+SELECT 'Sample Alternative Relations:' AS section;
+SELECT 
+    p1.name AS 'Boycotted Product',
+    p2.name AS 'Tunisian Alternative',
+    a.similarity_score AS 'Match Score'
+FROM alternatives a
+JOIN products p1 ON a.boycotted_product_id = p1.id
+JOIN products p2 ON a.alternative_product_id = p2.id
+LIMIT 5;
