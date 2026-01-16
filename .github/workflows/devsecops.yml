@@ -81,8 +81,9 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:latest .
-          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:latest ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:${{ github.run_number }}
+          IMAGE_TAG=${{ github.run_number }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG .
+          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:latest
 
       - name: Trivy Container Scan
         if: env.TRIVY_ENABLED == 'true'
@@ -98,15 +99,14 @@ jobs:
       - name: Push Docker Image
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "Pushing image to registry..."
+          IMAGE_TAG=${{ github.run_number }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:${{ github.run_number }}
 
   deploy-kubernetes:
     needs: docker-build-push
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -123,38 +123,30 @@ jobs:
 
       - name: Load Docker Image into KIND
         run: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:${{ github.run_number }}
-          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:${{ github.run_number }} --name devsecops-cluster
+          IMAGE_TAG=${{ github.run_number }}
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG --name devsecops-cluster
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl get nodes --context kind-devsecops-cluster
+          IMAGE_TAG=${{ github.run_number }}
+          # Apply manifests
           kubectl apply -f k8s/ --context kind-devsecops-cluster
-
-      - name: Update Deployment Image
-        run: |
+          # Update deployment with the correct image tag
           kubectl set image deployment/consumesafe \
-            consumesafe=${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:${{ github.run_number }} \
+            consumesafe=${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG \
             --context kind-devsecops-cluster
-          kubectl rollout status deployment/consumesafe --context kind-devsecops-cluster
+          # Wait for pods to be ready (longer timeout for first run)
+          kubectl wait --for=condition=Ready pod -l app=consumesafe --timeout=180s --context kind-devsecops-cluster
 
-      # --- NEW STEPS TO SHOW CLUSTER STATUS ---
-      - name: Show all namespaces
-        run: kubectl get ns --context kind-devsecops-cluster
-
-      - name: Show all pods
-        run: kubectl get pods -A --context kind-devsecops-cluster
-
-      - name: Describe all pods
-        run: kubectl describe pods --context kind-devsecops-cluster
+      - name: Show cluster info
+        run: |
+          kubectl get ns --context kind-devsecops-cluster
+          kubectl get pods -A --context kind-devsecops-cluster
+          kubectl describe pods --context kind-devsecops-cluster
 
       - name: Show container logs
         run: |
-          echo "Waiting for pods to be ready..."
-          kubectl wait --for=condition=Ready pod -l app=consumesafe --timeout=120s --context kind-devsecops-cluster
-
-          echo "Fetching logs..."
           for pod in $(kubectl get pods -l app=consumesafe -o jsonpath="{.items[*].metadata.name}" --context kind-devsecops-cluster); do
             echo "===== Logs for pod $pod ====="
-            kubectl logs $pod --context kind-devsecops-cluster
+            kubectl logs $pod --context kind-devsecops-cluster || echo "Pod $pod not ready yet"
           done
