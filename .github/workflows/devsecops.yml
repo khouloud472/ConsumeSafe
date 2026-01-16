@@ -1,0 +1,155 @@
+name: DevSecOps Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  APP_NAME: "consumesafe"
+  GITLEAKS_ENABLED: "true"
+  TRIVY_ENABLED: "true"
+  SONAR_ORG: "hattay112amine"
+  SONAR_PROJECT_KEY: "hattay112amine_ConsumeSafe"
+
+jobs:
+  build-test-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build Maven
+        run: mvn clean package -DskipTests
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Gitleaks Scan
+        if: env.GITLEAKS_ENABLED == 'true'
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: OWASP Dependency Check
+        continue-on-error: true
+        run: |
+          mvn org.owasp:dependency-check-maven:12.1.0:check -DfailBuildOnCVSS=11 -DskipProvidedScope=true
+
+      - name: SonarCloud Scan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn sonar:sonar \
+            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }} \
+            -Dsonar.organization=${{ env.SONAR_ORG }} \
+            -Dsonar.host.url=https://sonarcloud.io
+
+      - name: Archive Artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            target/*.jar
+            dependency-check-report.json
+
+  docker-build-push:
+    needs: build-test-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+          IMAGE_TAG=${{ github.run_number }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG .
+          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:latest
+
+      - name: Trivy Container Scan
+        if: env.TRIVY_ENABLED == 'true'
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:latest'
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Push Docker Image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          IMAGE_TAG=${{ github.run_number }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:latest
+
+  deploy-kubernetes:
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'v1.29.0'
+
+      - name: Create KIND Cluster
+        uses: helm/kind-action@v1.10.0
+        with:
+          cluster_name: devsecops-cluster
+
+      - name: Load Docker Image into KIND
+        run: |
+          IMAGE_TAG=${{ github.run_number }}
+          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG
+          kind load docker-image ${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG --name devsecops-cluster
+
+      - name: Deploy to Kubernetes
+        run: |
+          IMAGE_TAG=${{ github.run_number }}
+          # Apply manifests
+          kubectl apply -f k8s/ --context kind-devsecops-cluster
+          # Update deployment with correct image tag
+          kubectl set image deployment/consumesafe \
+            consumesafe=${{ secrets.DOCKER_USERNAME }}/${{ env.APP_NAME }}:$IMAGE_TAG \
+            --context kind-devsecops-cluster
+          # Give pods some time to start
+          sleep 10
+          # Wait for pods to be ready (longer timeout for first run)
+          kubectl wait --for=condition=Ready pod -l app=consumesafe --timeout=300s --context kind-devsecops-cluster
+
+      - name: Show cluster info
+        run: |
+          kubectl get ns --context kind-devsecops-cluster
+          kubectl get pods -A --context kind-devsecops-cluster
+          kubectl describe pods --context kind-devsecops-cluster
+
+      - name: Show container logs
+        run: |
+          for pod in $(kubectl get pods -l app=consumesafe -o jsonpath="{.items[*].metadata.name}" --context kind-devsecops-cluster); do
+            echo "===== Logs for pod $pod ====="
+            kubectl logs $pod --context kind-devsecops-cluster || echo "Pod $pod not ready yet"
+          done

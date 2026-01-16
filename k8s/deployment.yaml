@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumesafe
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: consumesafe
+  template:
+    metadata:
+      labels:
+        app: consumesafe
+    spec:
+      containers:
+        - name: consumesafe
+          image: hattay112amine/consumesafe:latest
+          ports:
+            - containerPort: 8080
